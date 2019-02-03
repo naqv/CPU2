@@ -155,47 +155,47 @@ def mttf_lower(mtt):
 	mtt_lower = mtt - mtt*0.5 
 	return mtt_lower
 
-def mttfr(tf):
+def mttfr(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
-	mttr = MTTF_t * math.e **( E_a_k * (1/tf  - 1/T_inf))
+	mttr = MTTF_t * math.e **( E_a_k * (1/(tf +273)  - 1/(room_temperature +273)))
 	return mttr
 
-def mttfem(tf):
+def mttfem(tf,room_temperature):
 	#J_inf_adv div J_inf
 	J_inf_adv_J_inf = J_inf_adv / J_inf
 	
 	#E_a div k
 	E_a_k = E_a / k
 	
-	mttfem = MTTF_t * (J_inf_adv_J_inf ** (-N)) * math.e**(E_a_k * (1/tf - 1/T_inf))
+	mttfem = MTTF_t * (J_inf_adv_J_inf ** (-N)) * math.e**(E_a_k * (1/(tf+273) - 1/(room_temperature+273)))
 	return mttfem
 	
-def mttfc(tf):
+def mttfc(tf,room_temperature):
 	#RH_inf_adv div RH_inf
 	RH_inf_adv_RH_inf = RH_inf_adv / RH_inf
 	
 	#E_a div k
 	E_a_k = E_a / k
 	
-	mttfc = MTTF_t * (RH_inf_adv_RH_inf ** (-2.7)) * math.e**(E_a_k * (1/tf - 1/T_inf))
+	mttfc = MTTF_t * (RH_inf_adv_RH_inf ** (-2.7)) * math.e**(E_a_k * (1/(tf+273) - 1/(room_temperature+273)))
 	return mttfc
 
-def mttftddb(tf):
+def mttftddb(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
-	mttftddb = MTTF_t * (math.e**(- gamma * (E_inf_adv - E_inf))) * (math.e ** (E_a_k * (1/tf - 1/T_inf)))
+	mttftddb = MTTF_t * (math.e**(- gamma * (E_inf_adv - E_inf))) * (math.e ** (E_a_k * (1/(tf+273) - 1/(room_temperature +273))))
 	return mttftddb
 
-def mttfsm(tf):
+def mttfsm(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
 	
-	mttfsm = MTTF_t * (abs((tf - T_inf_adv )/(tf - T_inf))) ** (-2.5) * (math.e ** (E_a_k * (1/tf - 1/T_inf)))
+	mttfsm = MTTF_t * (abs((tf - T_inf_adv )/(tf - room_temperature))) ** (-2.5) * (math.e ** (E_a_k * (1/(tf+273) - 1/(room_temperature+273))))
 	return mttfsm
 
-def mttftc(tf):
-	mttftc = MTTF_t * (abs((tf - T_inf_adv )/(tf - T_inf))) ** (-q)
+def mttftc(tf,room_temperature):
+	mttftc = MTTF_t * (abs((tf - T_inf_adv )/(tf - room_temperature))) ** (-q)
 	return mttftc
 
 def availability(temperature,room_temperature):
@@ -246,7 +246,8 @@ def external_temperature_impact(room_temperature,external_temperature,timestamp,
 	Pti= qr/3.412141633
 	up= (ATI*h)*(((3.413*Pti*(1-nti)*timestamp)/(ATI*h)) + external_temperature - room_temperature) - qr
 	down=   (ATI*h)
-	TPF = up/down + room_temperature                    
+	TPF = up/down + room_temperature 
+	return TPF                   
 
 def UnifiedAvailability(MTTF_IC):
 	return MTTF_IC / (MTTF_IC + MTTR)
@@ -341,12 +342,12 @@ def main():
             r1 = pool.apply_async(mttf,([tf]))
             r1_ = pool.apply_async(mttf_upper,([r1.get()]))
             r1__ = pool.apply_async(mttf_lower,([r1.get()]))
-            r2 = pool.apply_async(mttfr,([tf]))
-            r3 = pool.apply_async(mttfem,([tf]))
-            r4 = pool.apply_async(mttfc,([tf]))
-            r5 = pool.apply_async(mttftddb,([tf]))
-            r6 = pool.apply_async(mttfsm,([tf]))
-            r7 = pool.apply_async(mttftc,([tf]))
+            r2 = pool.apply_async(mttfr,([tf,temperature_room]))
+            r3 = pool.apply_async(mttfem,([tf,temperature_room]))
+            r4 = pool.apply_async(mttfc,([tf,temperature_room]))
+            r5 = pool.apply_async(mttftddb,([tf,temperature_room]))
+            r6 = pool.apply_async(mttfsm,([tf,temperature_room]))
+            r7 = pool.apply_async(mttftc,([tf,temperature_room]))
             r8 = pool.apply_async(availability,([tf,temperature_room]))
             r9 = pool.apply_async(availability_due_to_Electromigration,([tf,temperature_room]))
             r10 = pool.apply_async(availability_corrosion,([tf,temperature_room]))
