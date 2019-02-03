@@ -44,6 +44,7 @@ te= 1
 td=15
 SEER= 13
 ne=0.8
+fmc=2.3
 
 def load_csv():
 	try:
