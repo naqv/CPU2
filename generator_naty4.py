@@ -158,7 +158,7 @@ def mttf_lower(mtt):
 def mttfr(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
-	mttr = MTTF_t * math.e **( E_a_k * (1/(tf +273)  - 1/(room_temperature +273)))
+	mttr = MTTF_t * math.e **( E_a_k * (1/(tf +273)  - 1/(np.array(room_temperature) +273)))
 	return mttr
 
 def mttfem(tf,room_temperature):
@@ -168,7 +168,7 @@ def mttfem(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
 	
-	mttfem = MTTF_t * (J_inf_adv_J_inf ** (-N)) * math.e**(E_a_k * (1/(tf+273) - 1/(room_temperature+273)))
+	mttfem = MTTF_t * (J_inf_adv_J_inf ** (-N)) * math.e**(E_a_k * (1/(tf+273) - 1/(np.array(room_temperature)+273)))
 	return mttfem
 	
 def mttfc(tf,room_temperature):
@@ -178,20 +178,20 @@ def mttfc(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
 	
-	mttfc = MTTF_t * (RH_inf_adv_RH_inf ** (-2.7)) * math.e**(E_a_k * (1/(tf+273) - 1/(room_temperature+273)))
+	mttfc = MTTF_t * (RH_inf_adv_RH_inf ** (-2.7)) * math.e**(E_a_k * (1/(tf+273) - 1/(np.array(room_temperature)+273)))
 	return mttfc
 
 def mttftddb(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
-	mttftddb = MTTF_t * (math.e**(- gamma * (E_inf_adv - E_inf))) * (math.e ** (E_a_k * (1/(tf+273) - 1/(room_temperature +273))))
+	mttftddb = MTTF_t * (math.e**(- gamma * (E_inf_adv - E_inf))) * (math.e ** (E_a_k * (1/(tf+273) - 1/(np.array(room_temperature) +273))))
 	return mttftddb
 
 def mttfsm(tf,room_temperature):
 	#E_a div k
 	E_a_k = E_a / k
 	
-	mttfsm = MTTF_t * (abs((tf - T_inf_adv )/(tf - room_temperature))) ** (-2.5) * (math.e ** (E_a_k * (1/(tf+273) - 1/(room_temperature+273))))
+	mttfsm = MTTF_t * (abs((tf - T_inf_adv )/(tf - room_temperature))) ** (-2.5) * (math.e ** (E_a_k * (1/(tf+273) - 1/(np.array(room_temperature)+273))))
 	return mttfsm
 
 def mttftc(tf,room_temperature):
@@ -246,7 +246,7 @@ def external_temperature_impact(room_temperature,external_temperature,timestamp,
 	Pti= qr/3.412141633
 	up= (ATI*h)*(((3.413*Pti*(1-nti)*timestamp)/(ATI*h)) + external_temperature - room_temperature) - qr
 	down=   (ATI*h)
-	TPF = up/down + room_temperature 
+	TPF = up/down + np.array(room_temperature) 
 	return TPF                   
 
 def UnifiedAvailability(MTTF_IC):
