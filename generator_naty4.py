@@ -283,7 +283,7 @@ def actual_ambient_temperature(frecuency,room_temperature):
 
 #this receive frecuency ec_1
 def thermal_load_released(frecuency,temperature_room):
-	qred= 3.413*((I*V + activity_factor*cp*te*te*frecuency)*(V - nt) + h*as_motherboard*(np.array(temperature_room) -td))*te
+	qred= 3.413*((I*V + activity_factor*cp*V*V*frecuency)*(1 - nt) + h*as_motherboard*(np.array(temperature_room) -td))*te
 	return qred
 
 #this receive frecuency ec_1
