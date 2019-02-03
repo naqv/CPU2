@@ -44,7 +44,9 @@ te= 1
 td=15
 SEER= 13
 ne=0.8
-fmc=2.3
+ATI=400
+nti=0.95
+
 
 def load_csv():
 	try:
@@ -57,7 +59,7 @@ def load_csv():
 ########## THIS DEFINITIONS ADD EACH METRIC TO THE NEW CSV ###################################
 def add_metrics_to_new_csv(df,tf,mtt,mtt_upper,mtt_lower, mttfr, mttfem,mttfc,mttftddb,mttfsm,mttftc,a,aem,ac,
                            atddb,asm,atc,taa,qred,qr,PUE,DCie,cost, timestamp, externaltemp, roomtemp,
-                           mttfic, a_tc, qdit):
+                           mttfic, a_tc, qdit,TPF):
 	try:
 		#df is loaded form main
 		df = df.assign(TF = tf.values)
@@ -88,6 +90,7 @@ def add_metrics_to_new_csv(df,tf,mtt,mtt_upper,mtt_lower, mttfr, mttfem,mttfc,mt
 		df = df.assign(MTTF_IC = mttfic.values)
 		df = df.assign(A_TC = a_tc.values)
 		df = df.assign(Q_DIT = qdit.values)
+		df = df.assign(TPF = TPF.values)
 		df.to_csv('results_out.csv', sep = ';')
 	except Exception as e:
 		print('error reading file')
@@ -133,9 +136,9 @@ def get_average_cpu_freceuncy(dataframe):
 #equation 2
 def output_frequency(vectorFrequency,room_temperature):
   factor_a = ((I * V) + (activity_factor * cp * V**2 ) ) / ( h * as_motherboard )
-  factor_b = (1 - math.e ** (-((h * as_motherboard * 3600) / (mass * C)  )* 1000))
+  factor_b = (1 - math.e ** (-((h * as_motherboard * 3600) / (mass * C))* t))
   ec_2 = room_temperature + factor_a * vectorFrequency * factor_b 
-  return (ec_2/1000.0)
+  return (ec_2)
 
 #equation 3
 def mttf(temperature):
@@ -236,6 +239,42 @@ def availability_thermal_cycling(temperature,room_temperature):
 	atc = up/down
 	return atc
 
+def UnifiedReliability(MTTF_TC, MTTF_SM):
+	return (MTTF_TC * MTTF_SM) /(MTTF_TC + MTTF_SM)
+
+def external_temperature_impact(room_temperature,external_temperature,timestamp,qr):
+	Pti= qr/3.412141633
+	up= (ATI*h)*(((3.413*Pti*(1-nti)*timestamp)/(ATI*h)) + external_temperature - room_temperature) - qr
+	down=   (ATI*h)
+	TPF = up/down + room_temperature                    
+
+def UnifiedAvailability(MTTF_IC):
+	return MTTF_IC / (MTTF_IC + MTTR)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #this receive frecuency ec_1
 def actual_ambient_temperature(frecuency,room_temperature):
 	taa= room_temperature + ((I*V + activity_factor*cp*V*V*frecuency)*(V- nt))/(h*as_motherboard)
@@ -292,6 +331,7 @@ def main():
         print('starting')
         df = getDataframeFromCsv('results.csv',',')
         temperature_room= addRangeRoomTemp(len(df))
+        external_temperature= addRangeRoomTemp(len(df))
         freq= get_average_cpu_freceuncy(df)
         tf = output_frequency(freq*1000,temperature_room)
         
@@ -320,15 +360,16 @@ def main():
             r18 = pool.apply_async(DCie,([freq]))
             r19 = pool.apply_async(cost,([freq]))
             r20 = pool.apply_async(addTimeStamp,([len(df)]))
-            r21 = pool.apply_async(addRangeExternalTemp, ([len(df)]))
+            #r21 = pool.apply_async(addRangeExternalTemp, ([len(df)]))
             #r22 = pool.apply_async(addRangeRoomTemp, ([len(df)]))
             r23 = pool.apply_async(UnifiedReliability, ([r7.get(), r6.get()]))           
             r24 = pool.apply_async(UnifiedAvailability, ([r23.get()]))
             r25 = pool.apply_async(AmountEnergyDissipated, ([r16.get(), r17.get()]))
+            r26= pool.apply_async(external_temperature_impact,([temperature_room, external_temperature, r20.get(), r16.get()]))
 			
             add_metrics_to_new_csv(df,tf, r1.get(), r1_.get(), r1__.get(), r2.get(), r3.get(), r4.get(), r5.get(), r6.get(),
                                    r7.get(), r8.get(), r9.get(), r10.get(), r11.get(), r12.get(), r13.get(), r14.get(), r15.get(), r16.get(),
-                                   r17.get(), r18.get(), r19.get(), r20.get(), r21.get(), temperature_room, r23.get(), r24.get(), r25.get())
+                                   r17.get(), r18.get(), r19.get(), r20.get(), external_temperature, temperature_room, r23.get(), r24.get(), r25.get(),r26.get())
         #add_metrics_to_new_csv(c,atddb,asm,atc,taa,qred,qr,PUE,DCie,cost)        
         print('finished')
     except Exception as e:
