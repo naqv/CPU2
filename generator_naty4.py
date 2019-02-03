@@ -252,6 +252,19 @@ def external_temperature_impact(room_temperature,external_temperature,timestamp,
 def UnifiedAvailability(MTTF_IC):
 	return MTTF_IC / (MTTF_IC + MTTR)
 
+#this receive frecuency ec_1
+def thermal_load_released(frecuency,temperature_room):
+	qred= 3.413*((I*V + activity_factor*cp*V*V*frecuency)*(1 - nt) + h*as_motherboard*(np.array(temperature_room) -td))*te
+	return qred
+
+
+def power_required(frecuency,temperature_room):
+	temp= 3.413
+	upper= (3.792 + SEER)*((I*V+activity_factor*cp*V*V*frecuency)*(1- nt)) +3.792*(h*as_motherboard*(np.array(temperature_room)-td)) 
+	low= ne*SEER
+	qr= temp*(upper/low)*te
+	return qr
+
 
 
 
@@ -278,21 +291,13 @@ def UnifiedAvailability(MTTF_IC):
 
 #this receive frecuency ec_1
 def actual_ambient_temperature(frecuency,room_temperature):
-	taa= room_temperature + ((I*V + activity_factor*cp*V*V*frecuency)*(V- nt))/(h*as_motherboard)
+	taa= room_temperature + ((I*V + activity_factor*cp*V*V*frecuency)*(1- nt))/(h*as_motherboard)
 	return taa
 
-#this receive frecuency ec_1
-def thermal_load_released(frecuency,temperature_room):
-	qred= 3.413*((I*V + activity_factor*cp*V*V*frecuency)*(1 - nt) + h*as_motherboard*(np.array(temperature_room) -td))*te
-	return qred
+
 
 #this receive frecuency ec_1
-def power_required(frecuency,temperature_room):
-	temp= 3.413
-	upper= (3.792 + SEER)*((I*V+activity_factor*cp*te*te*frecuency)*(V- nt)) +3.792*(h*as_motherboard*(np.array(temperature_room)-td)) 
-	low= ne*SEER
-	qr= temp*(upper/low)
-	return qr
+
 #need to check
 def power_usage_efficiency(frecuency):
 	PUE=3.413*((I*V + cp*activity_factor*V*te*frecuency)/(12.5325 + 0.01653*frecuency)) 
