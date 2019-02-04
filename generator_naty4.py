@@ -17,7 +17,7 @@ V=1
 activity_factor= 0.1
 cp=0.1
 h=50
-as_motherboard = 60*(10**-4)
+as_motherboard = 60*(10**-4) #As
 mass= 50*(10**-3)
 C=900
 t=41
@@ -46,7 +46,7 @@ SEER= 13
 ne=0.8
 ATI=400
 nti=0.95
-
+E_cost = 0.08
 
 def load_csv():
 	try:
@@ -269,7 +269,7 @@ def power_required(frecuency,temperature_room):
 
 
 
-
+	
 
 
 
@@ -300,17 +300,23 @@ def actual_ambient_temperature(frecuency,room_temperature):
 
 #need to check
 def power_usage_efficiency(frecuency):
-	PUE=3.413*((I*V + cp*activity_factor*V*te*frecuency)/(12.5325 + 0.01653*frecuency)) 
+	fa = I * V + cp * activity_factor * (V **2) * frecuency
+	fb = ( ( (3.792 + SEER) * [fa * (1 -nt)] + 3.792 * [h * as_motherboard * (T_inf - td )]) /  (ne * SEER) ) * te
+	PUE= fa / fb
+	
+	3.413*((I*V + cp*activity_factor*V*te*frecuency)/(12.5325 + 0.01653*frecuency)) 
 	return PUE
 
 #need to check
 def DCie(frecuency):
-	DCie= (1253.25 + 1.653*frecuency)/(20.478 +0.03413*frecuency)
+	fa = I * V + cp * activity_factor * (V **2) * frecuency
+	DCie=  100 * ( ( (3.792 + SEER) * [fa * (1 -nt)] + 3.792 * [h * as_motherboard * (T_inf - td )]) /  (fa* ne * SEER) ) * te
 	return DCie
 
 #need to check
 def cost(frecuency):
-	cost = 0.00048 + 0.00020478*frecuency
+	fa = I * V + cp * activity_factor * (V **2) * frecuency
+	cost = fa * E_cost
 	return cost
 
 def addTimeStamp(sizePop):
