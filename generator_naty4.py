@@ -59,7 +59,7 @@ def load_csv():
 ########## THIS DEFINITIONS ADD EACH METRIC TO THE NEW CSV ###################################
 def add_metrics_to_new_csv(df,tf,mtt,mtt_upper,mtt_lower, mttfr, mttfem,mttfc,mttftddb,mttfsm,mttftc,a,aem,ac,
                            atddb,asm,atc,taa,qred,qr,PUE,DCie,cost, timestamp, externaltemp, roomtemp,
-                           mttfic, a_tc, qdit,TPF, Airflow, TAAF, deltaTde):
+                           mttfic, a_tc, qdit,TPF, Airflow, TAAF, deltaTde,QD):
     try:
         #df is loaded form main
         df = df.assign(TF = tf.values)
@@ -94,6 +94,7 @@ def add_metrics_to_new_csv(df,tf,mtt,mtt_upper,mtt_lower, mttfr, mttfem,mttfc,mt
         df = df.assign(AIRFLOW = Airflow.values)
         df = df.assign(TAAF = TAAF.values)
         df = df.assign(DeltaT_de = deltaTde.values)
+        df = df.assign(QD = QD.values)
         df.to_csv('results_out.csv', sep = ';')
     except Exception as e:
         print('error reading file')
@@ -268,38 +269,15 @@ def power_required(frecuency,temperature_room):
     qr= temp*(upper/low)*te
     return qr
 
+def AmountEnergyDissipated(Qr, PUE):    
+    Ptotal = (Qr * PUE ) / 3.413
+    return (Ptotal * te) * (1 - nt)
 
 
+def energyDemanded(Qr, PUE):    
+    Ptotal = (Qr * PUE ) / 3.413
+    return (Ptotal * te)
 
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#this receive frecuency ec_1
-def actual_ambient_temperature(frecuency,room_temperature):
-    taa= room_temperature + ((I*V + activity_factor*cp*V*V*frecuency)*(1- nt))/(h*as_motherboard)
-    return taa
-
-
-
-#this receive frecuency ec_1
 
 #need to check
 def power_usage_efficiency(frecuency, room_temperature):
@@ -316,7 +294,7 @@ def DCie(frecuency, room_temperature):
     d_ = fa * ne * SEER
     DCie=  100 * ( c_ /d_ ) * te
     return DCie
-
+    
 #need to check
 def cost(frecuency):
     fa = (I * V) + (cp * activity_factor * (V **2) * frecuency)
@@ -333,12 +311,14 @@ def volumeAirflow(frecuency, room_temperature):
     airflow = a_ / ( 1.21 * (b_ * c_ + d_))
     return airflow
 
+
+
 #new (I.A.)
 def thermalAcceleratedAging(frecuency, room_temperature):
     E_a_k = E_a / k
     fac = (I * V) + (cp * activity_factor * (V **2) * frecuency)
     a_ = np.array(room_temperature) + (fac * (1-nt))/(h * as_motherboard) + 273
-    b_ = np.array(room_temperature) + (fac * (1-nt))/(h * as_motherboard) * (1 - math.e**( ((-3600 * h * as_motherboard )/(mass * C)) * t )) + 273
+    b_ = np.array(room_temperature) + ((fac * (1-nt))/(h * as_motherboard)) * (1 - math.e**( ((-3600 * h * as_motherboard )/(mass * C)) * t )) + 273
     TAAF = math.e** (E_a_k * (1/a_ - 1/b_))
     return TAAF
 
@@ -346,6 +326,18 @@ def thermalAcceleratedAging(frecuency, room_temperature):
 def temperatureRiseDissipationEnergy(Q_DIT):
     deltaT_de = Q_DIT /(te * h * as_motherboard)
     return deltaT_de
+
+
+#this receive frecuency ec_1
+def actual_ambient_temperature(frecuency,room_temperature):
+    taa= room_temperature + ((I*V + activity_factor*cp*V*V*frecuency)*(1- nt))/(h*as_motherboard)
+    return taa
+
+
+
+
+
+
 
 
 
@@ -364,20 +356,7 @@ def UnifiedReliability(MTTF_TC, MTTF_SM):
 def UnifiedAvailability(MTTF_IC):
     return MTTF_IC / (MTTF_IC + MTTR)
 
-def AmountEnergyDissipated(Qr, PUE):
-    #Eq 26. Q_DIT = Q_D * (1 - nt)
 
-    #Eq 25. Q_D = P_total* te
-
-    #Eq 32. PUE = 3.413* P_total/Q_r
-
-    #rewriting
-    #Eq 32. P_total = Q_r * PUE/ 3.413
-    #Eq 25. Q_D = Q_r * PUE / 3.413
-    #Eq 26. Q_DIT = (Q_R * PUE / 3.413) * (1 - nt)
-    
-    Ptotal = (Qr * PUE ) / 3.413
-    return (Ptotal * te) * (1 - nt)
 
 def main():
     try:
@@ -423,10 +402,11 @@ def main():
             r27 = pool.apply_async(volumeAirflow, ([freq, temperature_room]))
             r28 = pool.apply_async(thermalAcceleratedAging, ([freq, temperature_room]))
             r29 = pool.apply_async(temperatureRiseDissipationEnergy, ([r25.get()]))
+            r30 = pool.apply_async(energyDemanded, ([r16.get(),r17,get()]))
             add_metrics_to_new_csv(df,tf, r1.get(), r1_.get(), r1__.get(), r2.get(), r3.get(), r4.get(), r5.get(), r6.get(),
                                    r7.get(), r8.get(), r9.get(), r10.get(), r11.get(), r12.get(), r13.get(), r14.get(), r15.get(), r16.get(),
                                    r17.get(), r18.get(), r19.get(), r20.get(), external_temperature, temperature_room, r23.get(), r24.get(), r25.get(),r26.get(),
-                                   r27.get(), r28.get(), r29.get())
+                                   r27.get(), r28.get(), r29.get(),r30.get())
         #add_metrics_to_new_csv(c,atddb,asm,atc,taa,qred,qr,PUE,DCie,cost)        
         print('finished')
     except Exception as e:
