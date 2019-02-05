@@ -314,12 +314,9 @@ def volumeAirflow(frecuency, room_temperature):
 
 
 #new (I.A.)
-def thermalAcceleratedAging(frecuency, room_temperature):
-    E_a_k = E_a / k
-    fac = (I * V) + (cp * activity_factor * (V **2) * frecuency)
-    a_ = np.array(room_temperature) + (fac * (1-nt))/(h * as_motherboard) + 273
-    b_ = np.array(room_temperature) + ((fac * (1-nt))/(h * as_motherboard)) * (1 - math.e**( ((-3600 * h * as_motherboard )/(mass * C)) * t )) + 273
-    TAAF = math.e** (E_a_k * (1/a_ - 1/b_))
+def thermalAcceleratedAging(frecuency_temperature, room_temperature):
+    Taa= room_temperature + ((I*V + activity_factor*cp*V*V*frecuency_temperature)*(1- nt))/(h*as_motherboard) 
+    TAAF = math.e**((E_a/k)*((1./(Taa+273))-(1./(frecuency_temperature+273))))
     return TAAF
 
 #new (I.A.)
@@ -332,14 +329,6 @@ def temperatureRiseDissipationEnergy(Q_DIT):
 def actual_ambient_temperature(frecuency,room_temperature):
     taa= room_temperature + ((I*V + activity_factor*cp*V*V*frecuency)*(1- nt))/(h*as_motherboard)
     return taa
-
-
-
-
-
-
-
-
 
 def addTimeStamp(sizePop):
         return [i for i in range(1, sizePop + 1)]
@@ -363,8 +352,11 @@ def main():
         print('starting')
         df = getDataframeFromCsv('results.csv',',')
         temperature_room= addRangeRoomTemp(len(df))
-        external_temperature= addRangeRoomTemp(len(df))
+        external_temperature= addRangeExternalTemp(len(df))
         freq= get_average_cpu_freceuncy(df)
+        ######################################################################################################
+        ############################ THIS 1000 is the one that make the conversion to MH #####################
+        ######################################################################################################
         tf = output_frequency(freq*1000,temperature_room)
         
 
@@ -398,11 +390,10 @@ def main():
             r24 = pool.apply_async(UnifiedAvailability, ([r23.get()]))
             r25 = pool.apply_async(AmountEnergyDissipated, ([r16.get(), r17.get()]))
             r26= pool.apply_async(external_temperature_impact,([temperature_room, external_temperature, r20.get(), r16.get()]))
-              
             r27 = pool.apply_async(volumeAirflow, ([freq, temperature_room]))
             r28 = pool.apply_async(thermalAcceleratedAging, ([freq, temperature_room]))
             r29 = pool.apply_async(temperatureRiseDissipationEnergy, ([r25.get()]))
-            r30 = pool.apply_async(energyDemanded, ([r16.get(),r17,get()]))
+            r30 = pool.apply_async(energyDemanded, ([r16.get(),r17.get()]))
             add_metrics_to_new_csv(df,tf, r1.get(), r1_.get(), r1__.get(), r2.get(), r3.get(), r4.get(), r5.get(), r6.get(),
                                    r7.get(), r8.get(), r9.get(), r10.get(), r11.get(), r12.get(), r13.get(), r14.get(), r15.get(), r16.get(),
                                    r17.get(), r18.get(), r19.get(), r20.get(), external_temperature, temperature_room, r23.get(), r24.get(), r25.get(),r26.get(),
