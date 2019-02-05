@@ -14,6 +14,7 @@ import os
 import seaborn as sns
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.ticker import FormatStrFormatter
+import matplotlib.patches as mpatches
 #CONSTANTS
 
 SAMPLESIZE = 100
@@ -144,6 +145,54 @@ def plotGroup(lsMetrics, xMeasure, xlabel, ylabel, ds, title, filename):
     plt.legend()
     plt.savefig(filename)
     plt.clf()
+
+def plotKDE(x, y, xlabel, ylabel, ds, title, filename):
+    #plot a Kernel Density Estimation of "X" and "Y" variables
+    sns.kdeplot(ds[x], ds[y], shade = True, legend = True)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.savefig(filename)
+    plt.clf()
+
+def plotTwoKDE(x, y1, y2, xlabel, ylabel, y1_legend, y2_legend, m1, m2, ds, title, filename):
+    #m1, m2: values to multiply y1,y2. For instance: availabilities metrics should be showed as percent (x%, y%, etc..)
+    #plot the Kernel Density Estimation of (x,y1) and (x,y2)
+    sns.kdeplot(ds[x], ds[y1]*m1, cmap="Reds", shade=True, shade_lowest=False)
+    sns.kdeplot(ds[x], ds[y2]*m2, cmap="Blues", shade=True, shade_lowest=False)
+
+    r = sns.color_palette("Reds")[2]
+    b = sns.color_palette("Blues")[2]
+
+    red_patch = mpatches.Patch(color=r, label= y1_legend)
+    blue_patch = mpatches.Patch(color=b, label= y2_legend)
+    print('filename: ', filename)
+    plt.legend(handles=[red_patch,blue_patch])
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.title(title)
+    plt.savefig(filename)
+    plt.clf()
+
+def saveTwoKDE(df):
+    print('plotting two kdes')
+    if not os.path.exists('kdes'):
+        os.makedirs('kdes')
+
+    sample = df.sample(SAMPLESIZE).sort_values('TIMESTAMP')
+
+    #(x, y1, y2, xlabel, ylabel, y1_legend, y2_legend, m1=1, m2=1, ds, title, filename)
+    lsV = []
+    lsV.append(['ROOM_TEMP','A','AEM','Temperature(°C)', 'Availability (%)', 'Availability','A. Electromigration',100,100,'Kernel Density Estimation','kdes/1_a_aem'])
+    lsV.append(['ROOM_TEMP','A','AC','Temperature(°C)', 'Availability (%)', 'Availability','A. Corrosion',100,100,'Kernel Density Estimation','kdes/2_a_ac'])
+    lsV.append(['ROOM_TEMP','A','ATDDB','Temperature(°C)', 'Availability (%)', 'Availability','A. Time Depending Dielectric Breakdown',100,100,'Kernel Density Estimation','kdes/3_a_tddb'])
+    lsV.append(['ROOM_TEMP','A','ASM','Temperature(°C)', 'Availability (%)', 'Availability','A. Stress Migration',100,100,'Kernel Density Estimation','kdes/4_a_asm'])
+    lsV.append(['ROOM_TEMP','A','ATC','Temperature(°C)', 'Availability (%)', 'Availability','A. Thermal Cycling',100,100,'Kernel Density Estimation','kdes/5_a_atc'])
+    
+    for v in lsV:
+        print('xlabel: ', v[4])
+        plotTwoKDE(v[0], v[1], v[2], v[3], v[4], v[5], v[6], v[7], v[8], sample, v[9], v[10])
+    print('saved two kdes \n')
 
 def saveFigures(df):
     print('plotting figures')
@@ -377,6 +426,7 @@ def saveDistPlots(df):
 df = load_csv()
 #print (df.iloc[:,41:63].describe())
 #plt.table(df.iloc[:,41:63].describe())
+saveTwoKDE(df)
 saveFigures(df)
 saveGroupPlot(df)
 printConfidenceInterval(df)
