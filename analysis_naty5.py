@@ -240,7 +240,11 @@ def saveFigures(df):
     ls.append(['TIMESTAMP', 'MTTF_IC', 'Time(s)', 'Unified Reliability','Unified Reliability','plots/22 Unified Reliability'])
     ls.append(['TIMESTAMP', 'A_TC', 'Time(s)', 'Unified Availability','Unified Availability vs Time','plots/23 Unified Availability vs time'])
     ls.append(['TIMESTAMP', 'Q_DIT', 'Time(s)', 'Amount Energy Dissipated','Amount Energy Dissipated vs Time','plots/24 Amount Energy Dissipated vs time'])
-
+    ls.append(['TIMESTAMP', 'TPF', 'Time(s)', 'External Temperature Impact','External Temperature Impact vs Time','plots/25 External Temperature Impact vs Time'])
+    ls.append(['TIMESTAMP', 'AIRFLOW', 'Time(s)', 'Required Volume Airflow','Required Volume Airflow vs Time','plots/26 Required Volume Airflow vs time'])
+    ls.append(['TIMESTAMP', 'TAAF', 'Time(s)', 'Thermal Accelerated Aging','Thermal Accelerated Aging vs Time','plots/27 Thermal Accelerated Aging vs time'])
+    ls.append(['TIMESTAMP', 'DeltaT_de', 'Time(s)', 'Temperature rise due to the dissipation of energy','Temperature rise due to the dissipation of energy vs Time','plots/24 Temperature rise due to the dissipation of energy vs time'])
+    ls.append(['TIMESTAMP', 'QD', 'Time(s)', 'Energy Demanded','Energy Demanded vs Time','plots/24 Energy Demanded vs time'])
     ls.append(['TF', 'F', 'Temperature(°C)', 'Frequency (MHz)','Frequency vs Temperature','plots/25_frecuency_vs_temperature'])
     ls.append(['TF', 'TF', 'Temperature(°C)', 'Temperature (°C)','Temperature VS Temperature','plots/26_temperature_vs_temperature'])
     ls.append(['TF', 'MTT', 'Temperature(°C)', 'Mean Temperature To Failure','Mean Temperature To Failure vs Temperature','plots/27_Mean_time_to_failure vs temperature'])
@@ -265,6 +269,13 @@ def saveFigures(df):
     ls.append(['TF', 'MTTF_IC', 'Temperature(°C)', 'Unified Reliability','Unified Reliability','plots/46 Unified Reliability'])
     ls.append(['TF', 'A_TC', 'Temperature(°C)', 'Unified Availability','Unified Availability vs Temperature','plots/47 Unified Availability vs temperature'])
     ls.append(['TF', 'Q_DIT', 'Temperature(°C)', 'Amount Energy Dissipated','Amount Energy Dissipated vs Temperature','plots/48 Amount Energy Dissipated vs temperature'])
+    ls.append(['TF', 'TPF', 'Temperature(°C)', 'External Temperature Impact','External Temperature Impact vs Temperature','plots/25 External Temperature Impact vs Temperature'])
+    ls.append(['TF', 'AIRFLOW', 'Temperature(°C)', 'Required Volume Airflow','Required Volume Airflow vs Temperature','plots/26 Required Volume Airflow vs Temperature'])
+    ls.append(['TF', 'TAAF', 'Temperature(°C)', 'Thermal Accelerated Aging','Thermal Accelerated Aging vs Temperature','plots/27 Thermal Accelerated Aging vs Temperature'])
+    ls.append(['TF', 'DeltaT_de', 'Temperature(°C)', 'Temperature rise due to the dissipation of energy','Temperature rise due to the dissipation of energy vs Temperature','plots/24 Temperature rise due to the dissipation of energy vs Temperature'])
+    ls.append(['TF', 'QD', 'Temperature(°C)', 'Energy Demanded','Energy Demanded vs Temperature','plots/24 Energy Demanded vs Temperature'])
+
+
 
     for e in ls:
         
@@ -426,12 +437,12 @@ def saveDistPlots(df):
 df = load_csv()
 #print (df.iloc[:,41:63].describe())
 #plt.table(df.iloc[:,41:63].describe())
-saveTwoKDE(df)
+#saveTwoKDE(df)
 saveFigures(df)
-saveGroupPlot(df)
-printConfidenceInterval(df)
-stardard_desviation(df)
-saveDistributionPlots(df)
-saveDistPlots(df)
-saveChartAvailability(df)
-saveCorrelationPlots(df)
+#saveGroupPlot(df)
+#printConfidenceInterval(df)
+#stardard_desviation(df)
+#saveDistributionPlots(df)
+#saveDistPlots(df)
+#saveChartAvailability(df)
+#saveCorrelationPlots(df)
