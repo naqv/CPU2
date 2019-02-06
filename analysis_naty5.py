@@ -328,6 +328,19 @@ def saveDistributionPlots(df):
     plotHist('TAA', df, n, 'Actual Ambient Temperature Distribution', 'distribution_plots/actual_ambient_temperature')
     plotHist('QRED', df, n, 'Thermal Load Released Distribution', 'distribution_plots/thermal_load_released')
     plotHist('QR', df, n, 'Power Required Distribution', 'distribution_plots/QR')
+
+    plotHist('MTT', df, n, 'Availability Distribution', 'distribution_plots/Availability_distribution')
+    plotHist('PUE', df, n, 'Availability Due to Electromigration Distribution', 'distribution_plots/Availability_electromigration_distribution')
+    plotHist('DCie', df, n, 'Availability Corrosion Distribution', 'distribution_plots/availability_corrosion')
+    plotHist('cost', df, n, 'Availability Due Time Dielectric Distribution', 'distribution_plots/availability_due_time_depende_dielectric')
+    plotHist('EXTERNAL_TEMP', df, n, 'Availability Stress Migration Distribution', 'distribution_plots/availability_stress_migration')
+    plotHist('ROOM_TEMP', df, n, 'Availability Thermal Cycling Distribution', 'distribution_plots/availability_thermal_cycling')
+    plotHist('AIRFLOW', df, n, 'Actual Ambient Temperature Distribution', 'distribution_plots/actual_ambient_temperature')
+    plotHist('QD', df, n, 'Thermal Load Released Distribution', 'distribution_plots/thermal_load_released')
+    plotHist('DeltaT_de', df, n, 'Power Required Distribution', 'distribution_plots/QR')
+
+
+
     print('saved distribution plots')
 
 def saveCorrelationPlots(dataframe):
@@ -344,6 +357,12 @@ def saveCorrelationPlots(dataframe):
     plotCorrelation(sample, 'MTTFF_TC','A',area, colors, alpha,'Correlation between MTTFF_TC and A','correlation_plots/correlation_mttff_tc_a')
     plotCorrelation(sample, 'MTT','vnf cpu usage',area, colors, alpha,'Correlation between MTT and VNF CPU Usage','correlation_plots/correlation_mtt_cpu_usage')
     plotCorrelation(sample, 'AC','A',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    plotCorrelation(sample, 'AC','A',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    plotCorrelation(sample, 'QR','QRED',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    plotCorrelation(sample, 'A','AM',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    plotCorrelation(sample, 'TAA','AIRFLOW',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+
+
     #np.corrcoef(dataframe['MTT'], dataframe['A'])
     print('saved correlation plots')
 
@@ -365,9 +384,10 @@ def saveChartAvailability(df):
 def saveGroupPlot(df):
     #plotGroup(lsMetrics, xMeasure, xlabel, ylabel, ds, title, filename)
     #a metric is a list with 3-values [x-column, y-label, a marker]
-    sample = df.sample(SAMPLESIZE)
+    sample = df.sample(SAMPLESIZE).sort_values('TF')
 
     print('plotting group metrics')
+
 
     #lsMetricsAvailabilities = []
     #lsMetricsAvailabilities.append(['A','Availability',None])
@@ -379,6 +399,18 @@ def saveGroupPlot(df):
     #lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
     #lsMetricsAvailabilities.append(['A_TC','Unified availability',None])
     #plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'plots/availability evaluation group')
+
+    lsMetricsAvailabilities = []
+    lsMetricsAvailabilities.append(['A','Availability',None])
+    lsMetricsAvailabilities.append(['AEM','A. due to electromagnetism',None])
+    lsMetricsAvailabilities.append(['AC','A. due to corrosion',None])
+    lsMetricsAvailabilities.append(['ATDDB','A. due to time-dependent dielectric breakdown',None])
+    lsMetricsAvailabilities.append(['ASM','A. due to stress migration',None])
+    lsMetricsAvailabilities.append(['ATC','A. due to thermal cycling',None])
+    #lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
+    lsMetricsAvailabilities.append(['A_TC','Unified availability',None])
+    plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'plots/availability evaluation group')
+
 
     lsMetricsFailures = []
     lsMetricsFailures.append(['MTTF_R','MTTF based in temperature',None])
@@ -422,27 +454,28 @@ def saveDistPlots(df):
     plotDist('ATC',sample,'Distribution Availability Thermal Cycling')
     plotDist('TAA',sample,'Distribution Actual Ambient Temperature')
     plotDist('QRED',sample,'Distribution Thermal Load Released')
-    plotDist('PUE',sample,'Distribution Power Ussage Effectiveness')
-    plotDist('DCie',sample,'Distribution DataCenter Infraestructure Efficiency')
-    plotDist('cost',sample,'Distribution Cost')
-    plotDist('EXTERNAL_TEMP',sample,'Distribution External Temperature')
-    plotDist('ROOM_TEMP',sample,'Distribution Room Temperature')
-    plotDist('MTTF_IC',sample,'Distribution Unified Reliability')
-    plotDist('A_TC',sample,'Distribution Unified Availability')
-    plotDist('Q_DIT',sample,'Distribution Amount of Energy Dissipated')
-    plotDist('MTT',sample,'Distribution MTT')
+    plotDist('PUE',sample,'14Distribution Power Ussage Effectiveness')
+    plotDist('DCie',sample,'13Distribution DataCenter Infraestructure Efficiency')
+    plotDist('cost',sample,'12Distribution Cost')
+    plotDist('EXTERNAL_TEMP',sample,'11Distribution External Temperature')
+    plotDist('ROOM_TEMP',sample,'1Distribution Room Temperature')
+    plotDist('MTTF_IC',sample,'2Distribution Unified Reliability')
+    plotDist('A_TC',sample,'Distributiilability')
+    plotDist('Q_DIT',sample,'Distribution Amou')
+    plotDist('MTT',sample,'Distribut')
     print('saved distribution plots')
 
 
 df = load_csv()
 #print (df.iloc[:,41:63].describe())
 #plt.table(df.iloc[:,41:63].describe())
-saveTwoKDE(df)
-saveFigures(df)
-saveGroupPlot(df)
+#saveTwoKDE(df)
+#saveFigures(df)
+#saveGroupPlot(df)
 #printConfidenceInterval(df)
 #stardard_desviation(df)
 saveDistributionPlots(df)
 saveDistPlots(df)
-saveChartAvailability(df)
-saveCorrelationPlots(df)
+#saveChartAvailability(df)
+#saveCorrelationPlots(df)
+
