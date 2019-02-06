@@ -365,7 +365,7 @@ def saveChartAvailability(df):
 def saveGroupPlot(df):
     #plotGroup(lsMetrics, xMeasure, xlabel, ylabel, ds, title, filename)
     #a metric is a list with 3-values [x-column, y-label, a marker]
-    sample = df.sample(SAMPLESIZE)
+    sample = df.sample(SAMPLESIZE).sort_values('TF')
 
     print('plotting group metrics')
 
@@ -376,7 +376,7 @@ def saveGroupPlot(df):
     lsMetricsAvailabilities.append(['ATDDB','A. due to time-dependent dielectric breakdown',None])
     lsMetricsAvailabilities.append(['ASM','A. due to stress migration',None])
     lsMetricsAvailabilities.append(['ATC','A. due to thermal cycling',None])
-    lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
+    #lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
     lsMetricsAvailabilities.append(['A_TC','Unified availability',None])
     plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'plots/availability evaluation group')
 
@@ -438,11 +438,11 @@ df = load_csv()
 #print (df.iloc[:,41:63].describe())
 #plt.table(df.iloc[:,41:63].describe())
 #saveTwoKDE(df)
-saveFigures(df)
-#saveGroupPlot(df)
+#saveFigures(df)
+saveGroupPlot(df)
 #printConfidenceInterval(df)
 #stardard_desviation(df)
 #saveDistributionPlots(df)
 #saveDistPlots(df)
-#saveChartAvailability(df)
+saveChartAvailability(df)
 #saveCorrelationPlots(df)
