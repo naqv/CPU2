@@ -245,8 +245,8 @@ def saveFigures(df):
     ls.append(['TIMESTAMP', 'TAAF', 'Time(s)', 'Thermal Accelerated Aging','Thermal Accelerated Aging vs Time','plots/27 Thermal Accelerated Aging vs time'])
     ls.append(['TIMESTAMP', 'DeltaT_de', 'Time(s)', 'Temperature rise due to the dissipation of energy','Temperature rise due to the dissipation of energy vs Time','plots/24 Temperature rise due to the dissipation of energy vs time'])
     ls.append(['TIMESTAMP', 'QD', 'Time(s)', 'Energy Demanded','Energy Demanded vs Time','plots/24 Energy Demanded vs time'])
-    ls.append(['TF', 'F', 'Temperature(°C)', 'Frequency (MHz)','Frequency vs Temperature','plots/25_frecuency_vs_temperature'])
-    ls.append(['TF', 'TF', 'Temperature(°C)', 'Temperature (°C)','Temperature VS Temperature','plots/26_temperature_vs_temperature'])
+    #ls.append(['TF', 'F', 'Temperature(°C)', 'Frequency (MHz)','Frequency vs Temperature','plots/25_frecuency_vs_temperature'])
+    #ls.append(['TF', 'TF', 'Temperature(°C)', 'Temperature (°C)','Temperature VS Temperature','plots/26_temperature_vs_temperature'])
     ls.append(['TF', 'MTT', 'Temperature(°C)', 'Mean Temperature To Failure','Mean Temperature To Failure vs Temperature','plots/27_Mean_time_to_failure vs temperature'])
     ls.append(['TF', 'MTTF_R', 'Temperature(°C)', 'Mean Temperature To Failure due to changes on processors temperature','Mean Temperature To Failure due to changes on processors temperature vs Temperature','plots/28_mean_time_to_failure_due_to_changes_on_processors_temperature'])
     ls.append(['TF', 'MTTF_EM', 'Temperature(°C)', 'Mean Temperature To Failure due to changes on the current density','Mean Temperature To Failure due to changes on the current density vs Temperature','plots/29_mean_time_to_failure_due_to_changes_on_the_current_density_temperature'])
@@ -272,8 +272,8 @@ def saveFigures(df):
     ls.append(['TF', 'TPF', 'Temperature(°C)', 'External Temperature Impact','External Temperature Impact vs Temperature','plots/25 External Temperature Impact vs Temperature'])
     ls.append(['TF', 'AIRFLOW', 'Temperature(°C)', 'Required Volume Airflow','Required Volume Airflow vs Temperature','plots/26 Required Volume Airflow vs Temperature'])
     ls.append(['TF', 'TAAF', 'Temperature(°C)', 'Thermal Accelerated Aging','Thermal Accelerated Aging vs Temperature','plots/27 Thermal Accelerated Aging vs Temperature'])
-    ls.append(['TF', 'DeltaT_de', 'Temperature(°C)', 'Temperature rise due to the dissipation of energy','Temperature rise due to the dissipation of energy vs Temperature','plots/24 Temperature rise due to the dissipation of energy vs Temperature'])
-    ls.append(['TF', 'QD', 'Temperature(°C)', 'Energy Demanded','Energy Demanded vs Temperature','plots/24 Energy Demanded vs Temperature'])
+    ls.append(['TF', 'DeltaT_de', 'Temperature(°C)', 'Temperature rise due to the dissipation of energy','Temperature rise due to the dissipation of energy vs Temperature','plots/28 Temperature rise due to the dissipation of energy vs Temperature'])
+    ls.append(['TF', 'QD', 'Temperature(°C)', 'Energy Demanded','Energy Demanded vs Temperature','plots/29 Energy Demanded vs Temperature'])
 
 
 
@@ -359,7 +359,7 @@ def saveChartAvailability(df):
     lsAvailabilites.append(['ATDDB','ATDDB','1'])
     lsAvailabilites.append(['ASM','ASM','2'])
     lsAvailabilites.append(['ATC','ATC','*'])
-    plotGroup(lsAvailabilites,'TF','TEMPERATURE (C)', 'AVAILABILITY (%)',sample, "PROCESSOR'S TEMPERATURE VS AVAILABILITY",'plots/availability_vs_temperature')
+    plotGroup(lsAvailabilites,'TF','TEMPERATURE (C)', 'AVAILABILITY (%)',sample, "PROCESSOR'S TEMPERATURE VS AVAILABILITY",'plots/GROUP_availabilities_vs_temperature')
     print('saved availabilities charts')
 
 def saveGroupPlot(df):
@@ -369,16 +369,16 @@ def saveGroupPlot(df):
 
     print('plotting group metrics')
 
-    lsMetricsAvailabilities = []
-    lsMetricsAvailabilities.append(['A','Availability',None])
-    lsMetricsAvailabilities.append(['AEM','A. due to electromagnetism',None])
-    lsMetricsAvailabilities.append(['AC','A. due to corrosion',None])
-    lsMetricsAvailabilities.append(['ATDDB','A. due to time-dependent dielectric breakdown',None])
-    lsMetricsAvailabilities.append(['ASM','A. due to stress migration',None])
-    lsMetricsAvailabilities.append(['ATC','A. due to thermal cycling',None])
-    lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
-    lsMetricsAvailabilities.append(['A_TC','Unified availability',None])
-    plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'plots/availability evaluation group')
+    #lsMetricsAvailabilities = []
+    #lsMetricsAvailabilities.append(['A','Availability',None])
+    #lsMetricsAvailabilities.append(['AEM','A. due to electromagnetism',None])
+    #lsMetricsAvailabilities.append(['AC','A. due to corrosion',None])
+    #lsMetricsAvailabilities.append(['ATDDB','A. due to time-dependent dielectric breakdown',None])
+    #lsMetricsAvailabilities.append(['ASM','A. due to stress migration',None])
+    #lsMetricsAvailabilities.append(['ATC','A. due to thermal cycling',None])
+    #lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
+    #lsMetricsAvailabilities.append(['A_TC','Unified availability',None])
+    #plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'plots/availability evaluation group')
 
     lsMetricsFailures = []
     lsMetricsFailures.append(['MTTF_R','MTTF based in temperature',None])
@@ -437,12 +437,12 @@ def saveDistPlots(df):
 df = load_csv()
 #print (df.iloc[:,41:63].describe())
 #plt.table(df.iloc[:,41:63].describe())
-#saveTwoKDE(df)
+saveTwoKDE(df)
 saveFigures(df)
-#saveGroupPlot(df)
+saveGroupPlot(df)
 #printConfidenceInterval(df)
 #stardard_desviation(df)
-#saveDistributionPlots(df)
-#saveDistPlots(df)
-#saveChartAvailability(df)
-#saveCorrelationPlots(df)
+saveDistributionPlots(df)
+saveDistPlots(df)
+saveChartAvailability(df)
+saveCorrelationPlots(df)
