@@ -46,6 +46,7 @@ def getMeanConfidenceInterval(data,name):
 def printConfidenceInterval(df):
     #check this, the variables are not used in another place, consider avoid return a tuple in
     #getMeanConfidenceInterval function (I.A.).
+    mci_mtt = getMeanConfidenceInterval(df['TF'].values,'TF')
     mci_mtt = getMeanConfidenceInterval(df['MTT'].values,'MTT')
     mci_mttfr = getMeanConfidenceInterval(df['MTTF_R'].values,'MTTF_R')
     mci_MTTF_EM = getMeanConfidenceInterval(df['MTTF_EM'].values,'MTTF_EM')
@@ -65,6 +66,14 @@ def printConfidenceInterval(df):
     mci_PUE = getMeanConfidenceInterval(df['PUE'].values,'PUE')
     mci_DCie = getMeanConfidenceInterval(df['DCie'].values,'DCie')
     mci_cost = getMeanConfidenceInterval(df['cost'].values,'cost')
+    mci_cost = getMeanConfidenceInterval(df['MTTF_IC'].values,'MTTF_IC')
+    mci_cost = getMeanConfidenceInterval(df['A_TC'].values,'A_TC')
+    mci_cost = getMeanConfidenceInterval(df['Q_DIT'].values,'Q_DIT')
+    mci_cost = getMeanConfidenceInterval(df['TPF'].values,'TPF')
+    mci_cost = getMeanConfidenceInterval(df['AIRFLOW'].values,'AIRFLOW')
+    mci_cost = getMeanConfidenceInterval(df['TAAF'].values,'TAAF')
+    mci_cost = getMeanConfidenceInterval(df['DeltaT_de'].values,'DeltaT_de')
+    mci_cost = getMeanConfidenceInterval(df['QD'].values,'QD')
 
 def plotHist(x, df, n, title, filename):
     plt.hist(df[x], n)
