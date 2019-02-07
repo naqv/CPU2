@@ -359,11 +359,11 @@ def saveCorrelationPlots(dataframe):
     plotCorrelation(sample, 'MTTFF_TC','A',area, colors, alpha,'Correlation between MTTFF_TC and A','correlation_plots/correlation_mttff_tc_a')
     plotCorrelation(sample, 'MTT','vnf cpu usage',area, colors, alpha,'Correlation between MTT and VNF CPU Usage','correlation_plots/correlation_mtt_cpu_usage')
     plotCorrelation(sample, 'AC','A',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
-    plotCorrelation(sample, 'AC','A',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
-    plotCorrelation(sample, 'QR','QRED',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    #plotCorrelation(sample, 'AC','A',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    plotCorrelation(sample, 'QR','QRED',area, colors, alpha,'Correlation between QR and QRED','correlation_plots/correlation_qr_qred')
     #check the plot below
     #plotCorrelation(sample, 'A','AC',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
-    plotCorrelation(sample, 'TAA','AIRFLOW',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    plotCorrelation(sample, 'TAA','AIRFLOW',area, colors, alpha,'Correlation between TAA and AIRFLOW','correlation_plots/correlation_TAA_AIRFLOW')
 
 
     #np.corrcoef(dataframe['MTT'], dataframe['A'])
@@ -471,7 +471,7 @@ saveGroupPlot(df)
 #printConfidenceInterval(df)
 #stardard_desviation(df)
 saveDistributionPlots(df)
-saveDistPlots(df)
+#saveDistPlots(df)
 saveChartAvailability(df)
 saveCorrelationPlots(df)
 
