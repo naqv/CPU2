@@ -124,11 +124,11 @@ def plot3DScatterPDataset(x,y,z, ds,xlabel, ylabel, zlabel, title, filename):
     plt.savefig(filename)
     plt.clf()
 
-def plotDist(x,ds, title):
+def plotDist(x,ds, title, filepath):
     try:
         ax = sns.distplot(ds[x])
         ax.set_title(title)
-        plt.savefig('plots/dist_' + title)
+        plt.savefig(filepath)
         plt.clf
     except Exception as e:
         print('cannot plot distribution for variable : ', x)
@@ -198,6 +198,9 @@ def saveFigures(df):
     print('plotting figures')
     if not os.path.exists('plots'):
         os.makedirs('plots')
+
+    if not os.path.exists('scatterplots'):
+        os.makedirs('scatterplots')
 
     Nc = 8
     Apf = 2.3
@@ -287,21 +290,21 @@ def saveFigures(df):
             plotDataset(e[0], e[1], sample, e[2], e[3], e[4], e[5])
     
     ls3d = []
-    ls3d.append(['TIMESTAMP','TF','MTTFF_TC','Time(s)', 'Temperature (°C)','MTTFF_TC' ,'Time,Temperature vs MTTFF_TC','plots/scatter_3d__1_MTTFF_TC'])
-    ls3d.append(['TIMESTAMP','TF','A','Time(s)', 'Temperature (°C)','Availability' ,'Time,Temperature vs Availability','plots/scatter_3d__2_Availability'])
-    ls3d.append(['TIMESTAMP','TF','AC','Time(s)', 'Temperature (°C)','Availability due to corrosion' ,'Time,Temperature vs Availability due to corrosion','plots/scatter_3d__3_Availability due to corrosion'])
-    ls3d.append(['TIMESTAMP','TF','ATDDB','Time(s)', 'Temperature (°C)','Availability Due Temperature Depending Dielectric Breakdown' ,'Time,Temperature vs Availability Due Temperature Depending Dielectric Breakdown','plots/scatter_3d__4_Availability Due Temperature Depending Dielectric Breakdown'])
-    ls3d.append(['TIMESTAMP','TF','ASM','Time(s)', 'Temperature (°C)','Availability Due To Stress Migration' ,'Time,Temperature vs Availability Due To Stress Migration','plots/scatter_3d__5_Availability Due To Stress Migration'])
-    ls3d.append(['TIMESTAMP','TF','ATC','Time(s)', 'Temperature (°C)','Availability Due To Thermal Cycling' ,'Time,Temperature vs Availability Due To Thermal Cycling','plots/scatter_3d__6_Availability Due To Thermal Cycling'])
-    ls3d.append(['TIMESTAMP','TF','TAA','Time(s)', 'Temperature (°C)','Availability Due To External Temperature' ,'Time,Temperature vs Availability Due To Thermal Cycling','plots/scatter_3d__7_Availability Due To External Temperature'])
-    ls3d.append(['TIMESTAMP','TF','QRED','Time(s)', 'Temperature (°C)','Thermal Load Released' ,'Time,Temperature vs Thermal Load Released','plots/scatter_3d__8_Thermal Load Released'])
-    ls3d.append(['TIMESTAMP','TF','QR','Time(s)', 'Temperature (°C)','Power Required' ,'Time,Temperature vs Power Required','plots/scatter_3d__9_Power Required'])
-    ls3d.append(['TIMESTAMP','TF','PUE','Time(s)', 'Temperature (°C)','Power Usage Efficiency' ,'Time,Temperature vs Power Usage Efficiency','plots/scatter_3d__10_Power Usage Efficiency'])
-    ls3d.append(['TIMESTAMP','TF','DCie','Time(s)', 'Temperature (°C)','DCie' ,'Time,Temperature vs DCie','plots/scatter_3d__11_DCie'])
-    ls3d.append(['TIMESTAMP','TF','cost','Time(s)', 'Temperature (°C)','Cost' ,'Time,Temperature vs Cost','plots/scatter_3d__12_Cost'])
-    ls3d.append(['TIMESTAMP','TF','MTTF_IC','Time(s)', 'Temperature (°C)','Unified Reliability' ,'Time,Temperature vs DCie','plots/scatter_3d__12_Unified'])
-    ls3d.append(['TIMESTAMP','TF','A_TC','Time(s)', 'Temperature (°C)','Unified Availability' ,'Time,Temperature vs Unified Availability','plots/scatter_3d__13_Unified Availability'])
-    ls3d.append(['TIMESTAMP','TF','Q_DIT','Time(s)', 'Temperature (°C)','Amount Energy Dissipated' ,'Time,Temperature vs Amount Energy Dissipated','plots/scatter_3d__14_Amount Energy Dissipated'])
+    ls3d.append(['TIMESTAMP','TF','MTTFF_TC','Time(s)', 'Temperature (°C)','MTTFF_TC' ,'Time,Temperature vs MTTFF_TC','scatterplots/scatter_3d__1_MTTFF_TC'])
+    ls3d.append(['TIMESTAMP','TF','A','Time(s)', 'Temperature (°C)','Availability' ,'Time,Temperature vs Availability','scatterplots/scatter_3d__2_Availability'])
+    ls3d.append(['TIMESTAMP','TF','AC','Time(s)', 'Temperature (°C)','Availability due to corrosion' ,'Time,Temperature vs Availability due to corrosion','scatterplots/scatter_3d__3_Availability due to corrosion'])
+    ls3d.append(['TIMESTAMP','TF','ATDDB','Time(s)', 'Temperature (°C)','Availability Due Temperature Depending Dielectric Breakdown' ,'Time,Temperature vs Availability Due Temperature Depending Dielectric Breakdown','scatterplots/scatter_3d__4_Availability Due Temperature Depending Dielectric Breakdown'])
+    ls3d.append(['TIMESTAMP','TF','ASM','Time(s)', 'Temperature (°C)','Availability Due To Stress Migration' ,'Time,Temperature vs Availability Due To Stress Migration','scatterplots/scatter_3d__5_Availability Due To Stress Migration'])
+    ls3d.append(['TIMESTAMP','TF','ATC','Time(s)', 'Temperature (°C)','Availability Due To Thermal Cycling' ,'Time,Temperature vs Availability Due To Thermal Cycling','scatterplots/scatter_3d__6_Availability Due To Thermal Cycling'])
+    ls3d.append(['TIMESTAMP','TF','TAA','Time(s)', 'Temperature (°C)','Availability Due To External Temperature' ,'Time,Temperature vs Availability Due To Thermal Cycling','scatterplots/scatter_3d__7_Availability Due To External Temperature'])
+    ls3d.append(['TIMESTAMP','TF','QRED','Time(s)', 'Temperature (°C)','Thermal Load Released' ,'Time,Temperature vs Thermal Load Released','scatterplots/scatter_3d__8_Thermal Load Released'])
+    ls3d.append(['TIMESTAMP','TF','QR','Time(s)', 'Temperature (°C)','Power Required' ,'Time,Temperature vs Power Required','scatterplots/scatter_3d__9_Power Required'])
+    ls3d.append(['TIMESTAMP','TF','PUE','Time(s)', 'Temperature (°C)','Power Usage Efficiency' ,'Time,Temperature vs Power Usage Efficiency','scatterplots/scatter_3d__10_Power Usage Efficiency'])
+    ls3d.append(['TIMESTAMP','TF','DCie','Time(s)', 'Temperature (°C)','DCie' ,'Time,Temperature vs DCie','scatterplots/scatter_3d__11_DCie'])
+    ls3d.append(['TIMESTAMP','TF','cost','Time(s)', 'Temperature (°C)','Cost' ,'Time,Temperature vs Cost','scatterplots/scatter_3d__12_Cost'])
+    ls3d.append(['TIMESTAMP','TF','MTTF_IC','Time(s)', 'Temperature (°C)','Unified Reliability' ,'Time,Temperature vs DCie','scatterplots/scatter_3d__12_Unified'])
+    ls3d.append(['TIMESTAMP','TF','A_TC','Time(s)', 'Temperature (°C)','Unified Availability' ,'Time,Temperature vs Unified Availability','scatterplots/scatter_3d__13_Unified Availability'])
+    ls3d.append(['TIMESTAMP','TF','Q_DIT','Time(s)', 'Temperature (°C)','Amount Energy Dissipated' ,'Time,Temperature vs Amount Energy Dissipated','scatterplots/scatter_3d__14_Amount Energy Dissipated'])
     
     for e in ls3d:
         print('plotting 3D scatter plot ', e[7])
@@ -315,29 +318,28 @@ def saveFigures(df):
     print('saved figures \n')
     
 def saveDistributionPlots(df):
-    if not os.path.exists('distribution_plots'):
-        os.makedirs('distribution_plots')
+    if not os.path.exists('hist_dist_plots'):
+        os.makedirs('hist_dist_plots')
     n= 50
-    print('plotting distribution plots')
-    plotHist('A', df, n, 'Availability Distribution', 'distribution_plots/Availability_distribution')
-    plotHist('AEM', df, n, 'Availability Due to Electromigration Distribution', 'distribution_plots/Availability_electromigration_distribution')
-    plotHist('AC', df, n, 'Availability Corrosion Distribution', 'distribution_plots/availability_corrosion')
-    plotHist('ATDDB', df, n, 'Availability Due Time Dielectric Distribution', 'distribution_plots/availability_due_time_depende_dielectric')
-    plotHist('ASM', df, n, 'Availability Stress Migration Distribution', 'distribution_plots/availability_stress_migration')
-    plotHist('ATC', df, n, 'Availability Thermal Cycling Distribution', 'distribution_plots/availability_thermal_cycling')
-    plotHist('TAA', df, n, 'Actual Ambient Temperature Distribution', 'distribution_plots/actual_ambient_temperature')
-    plotHist('QRED', df, n, 'Thermal Load Released Distribution', 'distribution_plots/thermal_load_released')
-    plotHist('QR', df, n, 'Power Required Distribution', 'distribution_plots/QR')
-
-    plotHist('MTT', df, n, 'Availability Distribution', 'distribution_plots/Availability_distribution')
-    plotHist('PUE', df, n, 'Availability Due to Electromigration Distribution', 'distribution_plots/Availability_electromigration_distribution')
-    plotHist('DCie', df, n, 'Availability Corrosion Distribution', 'distribution_plots/availability_corrosion')
-    plotHist('cost', df, n, 'Availability Due Time Dielectric Distribution', 'distribution_plots/availability_due_time_depende_dielectric')
-    plotHist('EXTERNAL_TEMP', df, n, 'Availability Stress Migration Distribution', 'distribution_plots/availability_stress_migration')
-    plotHist('ROOM_TEMP', df, n, 'Availability Thermal Cycling Distribution', 'distribution_plots/availability_thermal_cycling')
-    plotHist('AIRFLOW', df, n, 'Actual Ambient Temperature Distribution', 'distribution_plots/actual_ambient_temperature')
-    plotHist('QD', df, n, 'Thermal Load Released Distribution', 'distribution_plots/thermal_load_released')
-    plotHist('DeltaT_de', df, n, 'Power Required Distribution', 'distribution_plots/QR')
+    print('plotting distribution plots (using hist)')
+    plotHist('A', df, n, 'Availability Distribution', 'hist_dist_plots/1_Availability_distribution')
+    plotHist('AEM', df, n, 'Availability Due to Electromigration Distribution', 'hist_dist_plots/2_Availability_electromigration_distribution')
+    plotHist('AC', df, n, 'Availability Corrosion Distribution', 'hist_dist_plots/3_availability_corrosion')
+    plotHist('ATDDB', df, n, 'Availability Due Time Dielectric Distribution', 'hist_dist_plots/4_availability_due_time_depende_dielectric')
+    plotHist('ASM', df, n, 'Availability Stress Migration Distribution', 'hist_dist_plots/5_availability_stress_migration')
+    plotHist('ATC', df, n, 'Availability Thermal Cycling Distribution', 'hist_dist_plots/6_availability_thermal_cycling')
+    plotHist('TAA', df, n, 'Actual Ambient Temperature Distribution', 'hist_dist_plots/7_actual_ambient_temperature')
+    plotHist('QRED', df, n, 'Thermal Load Released Distribution', 'hist_dist_plots/8_thermal_load_released')
+    plotHist('QR', df, n, 'Power Required Distribution', 'hist_dist_plots/9_QR')
+    plotHist('MTT', df, n, 'MTTF Distribution', 'hist_dist_plots/10_Mean Time To Failure')
+    plotHist('PUE', df, n, 'Power Ussage Efficiency Distribution', 'hist_dist_plots/11_Power_Ussage_Efficiency')
+    plotHist('DCie', df, n, 'DataCenter Infrastructure Efficiency Distribution', 'hist_dist_plots/12_DataCenter_Infrastructure_Efficiency')
+    plotHist('cost', df, n, 'Cost Distribution', 'hist_dist_plots/13_Cost')
+    plotHist('EXTERNAL_TEMP', df, n, 'External Temperature Distribution', 'hist_dist_plots/14_External_Temperature')
+    plotHist('ROOM_TEMP', df, n, 'Room Temperature Distribution', 'hist_dist_plots/15_Room_Temperature')
+    plotHist('AIRFLOW', df, n, 'Required Volume Airflow Distribution', 'hist_dist_plots/16_Airflow')
+    plotHist('QD', df, n, 'Energy Demanded Distribution', 'hist_dist_plots/17_Energy_Demanded')
+    plotHist('DeltaT_de', df, n, 'Temperature Rise Due To Dissipation Energy Distribution', 'hist_dist_plots/18_Rise_Dissipation_Energy')
 
 
 
@@ -359,7 +361,8 @@ def saveCorrelationPlots(dataframe):
     plotCorrelation(sample, 'AC','A',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
     plotCorrelation(sample, 'AC','A',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
     plotCorrelation(sample, 'QR','QRED',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
-    plotCorrelation(sample, 'A','AM',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
+    #check the plot below
+    #plotCorrelation(sample, 'A','AC',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
     plotCorrelation(sample, 'TAA','AIRFLOW',area, colors, alpha,'Correlation between AC and A','correlation_plots/correlation_ac_a')
 
 
@@ -384,21 +387,13 @@ def saveChartAvailability(df):
 def saveGroupPlot(df):
     #plotGroup(lsMetrics, xMeasure, xlabel, ylabel, ds, title, filename)
     #a metric is a list with 3-values [x-column, y-label, a marker]
+
+    if not os.path.exists('group_metric_plots'):
+        os.makedirs('group_metric_plots')
+    
     sample = df.sample(SAMPLESIZE).sort_values('TF')
 
     print('plotting group metrics')
-
-
-    #lsMetricsAvailabilities = []
-    #lsMetricsAvailabilities.append(['A','Availability',None])
-    #lsMetricsAvailabilities.append(['AEM','A. due to electromagnetism',None])
-    #lsMetricsAvailabilities.append(['AC','A. due to corrosion',None])
-    #lsMetricsAvailabilities.append(['ATDDB','A. due to time-dependent dielectric breakdown',None])
-    #lsMetricsAvailabilities.append(['ASM','A. due to stress migration',None])
-    #lsMetricsAvailabilities.append(['ATC','A. due to thermal cycling',None])
-    #lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
-    #lsMetricsAvailabilities.append(['A_TC','Unified availability',None])
-    #plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'plots/availability evaluation group')
 
     lsMetricsAvailabilities = []
     lsMetricsAvailabilities.append(['A','Availability',None])
@@ -409,7 +404,7 @@ def saveGroupPlot(df):
     lsMetricsAvailabilities.append(['ATC','A. due to thermal cycling',None])
     #lsMetricsAvailabilities.append(['MTTF_IC','Unified availability',None])
     lsMetricsAvailabilities.append(['A_TC','Unified availability',None])
-    plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'plots/availability evaluation group')
+    plotGroup(lsMetricsAvailabilities, 'TF','Temperature (°C)', 'AVAILABILITIES', sample,'Availability Evaluation', 'group_metric_plots/1_availability evaluation')
 
 
     lsMetricsFailures = []
@@ -418,7 +413,7 @@ def saveGroupPlot(df):
     lsMetricsFailures.append(['MTTF_TDDB','Time-Dependent Dielectric Breakdown',None])
     lsMetricsFailures.append(['MTTF_SM','Stress Migration',None])
     lsMetricsFailures.append(['MTTFF_TC','Thermal Cycling',None])
-    plotGroup(lsMetricsFailures, 'TF','Temperature (°C)', 'Evaluation Failures', sample,'Evaluation Failures', 'plots/evaluation failure group')
+    plotGroup(lsMetricsFailures, 'TF','Temperature (°C)', 'Evaluation Failures', sample,'Evaluation Failures', 'group_metric_plots/2_failure evaluation')
 
     #plt.plot(x, sample['TAA'], label='Thermal Accelearated Aging')
     #plt.plot(x, sample['TAA'], label='Actual Ambient Temperature')
@@ -431,51 +426,52 @@ def saveGroupPlot(df):
     lsMetricsCooling = []
     lsMetricsCooling.append(['QRED','Thermal Load Released',None])
     lsMetricsCooling.append(['QR','Energy Required',None])
-    plotGroup(lsMetricsCooling, 'TF','Temperature (°C)', 'Cooling Evaluation', sample,'Cooling Evaluation', 'plots/cooling evaluation')
+    plotGroup(lsMetricsCooling, 'TF','Temperature (°C)', 'Cooling Evaluation', sample,'Cooling Evaluation', 'group_metric_plots/3_cooling evaluation')
 
     lsMetricsEnergy = []
     lsMetricsEnergy.append(['PUE','Power Ussage Effectiveness',None])
     lsMetricsEnergy.append(['DCie','DataCenter Infraestructure Efficiency',None])
     lsMetricsEnergy.append(['cost','Cost',None])
     lsMetricsEnergy.append(['Q_DIT','Amount of Energy Dissipated',None])
-    plotGroup(lsMetricsEnergy, 'TF','Temperature (°C)', 'Energy Evaluation', sample,'Energy Evaluation', 'plots/energy evaluation')
+    plotGroup(lsMetricsEnergy, 'TF','Temperature (°C)', 'Energy Evaluation', sample,'Energy Evaluation', 'group_metric_plots/4_energy evaluation')
     print('saved group metrics')
     
 def saveDistPlots(df):
+    if not os.path.exists('distribution_plots'):
+        os.makedirs('distribution_plots')
     sample = df.sample(SAMPLESIZE)
 
     print('plotting dist plots')
-    plotDist('MTT',sample,'Distribution MTT')
-    plotDist('A',sample,'Distribution Availability')
-    plotDist('AC',sample,'Distribution Availability Corrosion')
-    plotDist('AEM',sample,'Distribution Availability Electromigration')
-    plotDist('ATDDB',sample,'Distribution Availability Time-Dependent Dielectric Breakdown')
-    plotDist('ASM',sample,'Distribution Availability Stress Migration')
-    plotDist('ATC',sample,'Distribution Availability Thermal Cycling')
-    plotDist('TAA',sample,'Distribution Actual Ambient Temperature')
-    plotDist('QRED',sample,'Distribution Thermal Load Released')
-    plotDist('PUE',sample,'14Distribution Power Ussage Effectiveness')
-    plotDist('DCie',sample,'13Distribution DataCenter Infraestructure Efficiency')
-    plotDist('cost',sample,'12Distribution Cost')
-    plotDist('EXTERNAL_TEMP',sample,'11Distribution External Temperature')
-    plotDist('ROOM_TEMP',sample,'1Distribution Room Temperature')
-    plotDist('MTTF_IC',sample,'2Distribution Unified Reliability')
-    plotDist('A_TC',sample,'Distributiilability')
-    plotDist('Q_DIT',sample,'Distribution Amou')
-    plotDist('MTT',sample,'Distribut')
+    plotDist('MTT',sample,'MTTF Distribution','distribution_plots/1_Distribution MTTF')
+    plotDist('A',sample,'Availability Distribution','distribution_plots/2_Distribution Availability')
+    plotDist('AC',sample,'Availability Corrosion Distribution','distribution_plots/3_Distribution Availability Corrosion')
+    plotDist('AEM',sample,'Availability Electromigration Distribution','distribution_plots/4_Distribution Availability Electromigration')
+    plotDist('ATDDB',sample,'Availability Time-Dependent Dielectric Breakdown Distribution','distribution_plots/5_Distribution Availability Time-Dependent Dielectric Breakdown')
+    plotDist('ASM',sample,'Availability Stress Migration Distribution','distribution_plots/6_Distribution Availability Stress Migration')
+    plotDist('ATC',sample,'Availability Thermal Cycling Distribution','distribution_plots/7_Distribution Availability Thermal Cycling')
+    plotDist('TAA',sample,'Actual Ambient Temperature Distribution','distribution_plots/8_Distribution Actual Ambient Temperature')
+    plotDist('QRED',sample,'Thermal Load Released Distribution','distribution_plots/9_Distribution Thermal Load Released')
+    plotDist('PUE',sample,'Power Ussage Effectiveness Distribution','distribution_plots/10_Distribution Power Ussage Effectiveness')
+    plotDist('DCie',sample,'DataCenter Infraestructure Efficiency Distribution','distribution_plots/11_Distribution DataCenter Infraestructure Efficiency')
+    plotDist('cost',sample,'Cost Distribution','distribution_plots/12_Distribution Cost')
+    plotDist('EXTERNAL_TEMP','External Temperature Distribution',sample,'distribution_plots/13_Distribution External Temperature')
+    plotDist('ROOM_TEMP',sample,'Room Temperature Distribution','distribution_plots/14_Distribution Room Temperature')
+    plotDist('MTTF_IC',sample,'Unified Reliability Distribution','distribution_plots/15_Distribution Unified Reliability')
+    plotDist('A_TC',sample,'Availability Thermal Cycling Distribution', 'distribution_plots/16_Distribution Availability Thermal Cycling')
+    plotDist('Q_DIT',sample,'Amount Energy Dissipated Distribution','Distribution Amount Energy Dissipated')
     print('saved distribution plots')
 
 
 df = load_csv()
 #print (df.iloc[:,41:63].describe())
 #plt.table(df.iloc[:,41:63].describe())
-#saveTwoKDE(df)
-#saveFigures(df)
-#saveGroupPlot(df)
+saveTwoKDE(df)
+saveFigures(df)
+saveGroupPlot(df)
 #printConfidenceInterval(df)
 #stardard_desviation(df)
 saveDistributionPlots(df)
 saveDistPlots(df)
-#saveChartAvailability(df)
-#saveCorrelationPlots(df)
+saveChartAvailability(df)
+saveCorrelationPlots(df)
 
