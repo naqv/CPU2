@@ -207,7 +207,7 @@ def mttfsm(tf,room_temperature):
     return mttfsm
 
 def mttftc(tf,room_temperature):
-    mttftc = MTTF_t * (abs(tf - T_inf_adv)/abs(tf - np.array(room_temperature)) ** (-q)
+    mttftc = MTTF_t * (abs(tf - T_inf_adv)/abs(tf - np.array(room_temperature))) ** (-q)
     return mttftc
 
 def availability(temperature,room_temperature):
