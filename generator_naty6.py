@@ -146,7 +146,7 @@ def output_frequency(vectorFrequency,room_temperature):
     #b = - (3600 * (h * As)/m*C) * t
     a = ((I * V) + (activity_factor * cp * (V**2) * vectorFrequency)) / (h * as_motherboard)
     b = - (3600 * (h * as_motherboard)/(mass * C))*t
-    rs = (room_temperature + a * (1 -(math.e**b) ))
+    rs = (room_temperature + a * (1 -(math.e**b) ))/10
     return rs
 
 #equation 3
@@ -207,7 +207,7 @@ def mttfsm(tf,room_temperature):
     return mttfsm
 
 def mttftc(tf,room_temperature):
-    mttftc = MTTF_t * (abs(tf - T_inf_adv)/abs(tf - room_temperature)) ** (-q)
+    mttftc = MTTF_t * (abs(tf - T_inf_adv)/abs(tf - np.array(room_temperature)) ** (-q)
     return mttftc
 
 def availability(temperature,room_temperature):
@@ -363,7 +363,7 @@ def main():
         df = getDataframeFromCsv('results.csv',',')
         temperature_room= addRangeRoomTemp(len(df))
         external_temperature= addRangeExternalTemp(len(df))
-        freq= get_average_cpu_freceuncy(df)
+        freq= (get_average_cpu_freceuncy(df))
 		
         ######################################################################################################
         ############################ THIS 1000 is the one that make the conversion to MH #####################
