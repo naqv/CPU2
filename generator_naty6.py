@@ -30,7 +30,7 @@ K = 8.623*(10**-5)
 MTTR = 8
 MTTF_t = 27800
 J_inf_adv = 2.5 * (10**5)
-J_inf = 2*(10**5)
+J_inf = 2.0*(10**5)
 N = 2
 RH_inf_adv = 85
 RH_inf = 60
@@ -180,7 +180,6 @@ def mttfem(tf,room_temperature):
     
     #E_a div k
     E_a_k = E_a / k
-    
     mttfem = MTTF_t * (J_inf_adv_J_inf ** (-N)) * math.e**(E_a_k * (1/(tf+273) - 1/(np.array(room_temperature)+273)))
     return mttfem
     
@@ -204,11 +203,11 @@ def mttfsm(tf,room_temperature):
     #E_a div k
     E_a_k = E_a / k
     
-    mttfsm = MTTF_t * (abs((tf - T_inf_adv )/(tf - room_temperature))) ** (-2.5) * (math.e ** (E_a_k * (1/(tf+273) - 1/(np.array(room_temperature)+273))))
+    mttfsm = MTTF_t * ((abs((tf - T_inf_adv ))/abs((tf - room_temperature)))** (-2.5)) * (math.e ** (E_a_k * (1/(tf+273) - 1/(np.array(room_temperature)+273))))
     return mttfsm
 
 def mttftc(tf,room_temperature):
-    mttftc = MTTF_t * (abs((tf - T_inf_adv )/(tf - room_temperature))) ** (-q)
+    mttftc = MTTF_t * (abs(tf - T_inf_adv)/abs(tf - room_temperature)) ** (-q)
     return mttftc
 
 def availability(temperature,room_temperature):
@@ -352,7 +351,8 @@ def addRangeRoomTemp(sizePop):
     return [random.uniform(20,30) for i in range(0,sizePop)]
 
 def UnifiedReliability(MTTF_TC, MTTF_SM):
-    return (MTTF_TC * MTTF_SM) /(MTTF_TC + MTTF_SM)
+    return 1/((1/MTTF_SM)+(1/MTTF_TC))
+    #return (MTTF_TC * MTTF_SM) /(MTTF_TC + MTTF_SM)
 
 def UnifiedAvailability(MTTF_IC):
     return MTTF_IC / (MTTF_IC + MTTR)
