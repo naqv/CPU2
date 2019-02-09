@@ -19,10 +19,41 @@ import matplotlib.patches as mpatches
 
 SAMPLESIZE = 100
 
+WIDTH_FIGURE = 11.7
+HEIGHT_FIGURE =  8.27
+
 # seaborn options
 sns.set()
 sns.set_palette("husl",3) 
-sns.set(rc={'figure.figsize':(11.7,8.27)})
+sns.set(rc={'figure.figsize':(WIDTH_FIGURE,HEIGHT_FIGURE*2)})
+
+def saveTable(df, title, filename):
+    fig, ax = plt.subplots(6, 1)
+    for i in range(0,6):
+        ax[i].get_xaxis().set_visible(False)
+        ax[i].get_yaxis().set_visible(False) 
+    fig.set_size_inches(11, 14)
+    ax[0].title.set_text(title)
+
+    
+    ptable(ax[0], df.iloc[:,:5], loc='upper center')
+    ptable(ax[1], df.iloc[:,5:10], loc='upper center')
+    ptable(ax[2], df.iloc[:,10:15], loc='upper center')
+    ptable(ax[3], df.iloc[:,15:20], loc='upper center')
+    ptable(ax[4], df.iloc[:,20:25], loc='upper center')
+    ptable(ax[5], df.iloc[:,25:], loc='upper center')
+    plt.axis('off')
+    
+    plt.savefig(filename)
+    print('saving table ', filename)
+    plt.clf()
+
+def saveHeatMap(df, title, filename):
+    sns.heatmap(df.corr())
+    plt.title(title)
+    plt.savefig(filename)
+    plt.clf()
+    print('saved heatmap')
 
 def load_csv():
     try:
@@ -191,11 +222,11 @@ def saveTwoKDE(df):
 
     #(x, y1, y2, xlabel, ylabel, y1_legend, y2_legend, m1=1, m2=1, ds, title, filename)
     lsV = []
-    lsV.append(['TF','A','AEM','Temperature(°C)', 'Availability (%)', 'Availability','A. Electromigration',100,100,'Kernel Density Estimation','kdes/1_a_aem'])
-    lsV.append(['TF','A','AC','Temperature(°C)', 'Availability (%)', 'Availability','A. Corrosion',100,100,'Kernel Density Estimation','kdes/2_a_ac'])
-    lsV.append(['TF','A','ATDDB','Temperature(°C)', 'Availability (%)', 'Availability','A. Time Depending Dielectric Breakdown',100,100,'Kernel Density Estimation','kdes/3_a_tddb'])
-    lsV.append(['TF','A','ASM','Temperature(°C)', 'Availability (%)', 'Availability','A. Stress Migration',100,100,'Kernel Density Estimation','kdes/4_a_asm'])
-    lsV.append(['TF','A','ATC','Temperature(°C)', 'Availability (%)', 'Availability','A. Thermal Cycling',100,100,'Kernel Density Estimation','kdes/5_a_atc'])
+    lsV.append(['ROOM_TEMP','A','AEM','Temperature(°C)', 'Availability (%)', 'Availability','A. Electromigration',100,100,'Kernel Density Estimation','kdes/1_a_aem'])
+    lsV.append(['ROOM_TEMP','A','AC','Temperature(°C)', 'Availability (%)', 'Availability','A. Corrosion',100,100,'Kernel Density Estimation','kdes/2_a_ac'])
+    lsV.append(['ROOM_TEMP','A','ATDDB','Temperature(°C)', 'Availability (%)', 'Availability','A. Time Depending Dielectric Breakdown',100,100,'Kernel Density Estimation','kdes/3_a_tddb'])
+    lsV.append(['ROOM_TEMP','A','ASM','Temperature(°C)', 'Availability (%)', 'Availability','A. Stress Migration',100,100,'Kernel Density Estimation','kdes/4_a_asm'])
+    lsV.append(['ROOM_TEMP','A','ATC','Temperature(°C)', 'Availability (%)', 'Availability','A. Thermal Cycling',100,100,'Kernel Density Estimation','kdes/5_a_atc'])
     
     for v in lsV:
         print('xlabel: ', v[4])
@@ -471,6 +502,12 @@ def saveDistPlots(df):
 
 
 df = load_csv()
+
+table = df.iloc[:,41:].describe().round(4)
+saveTable(table, 'Variables', 'Variables describe')
+saveHeatMap(table, 'Heatmap', 'Heatmap Variables')
+
+
 #print (df.iloc[:,41:63].describe())
 #print(df.iloc[:,42:74].describe())
 saveTwoKDE(df)
@@ -479,6 +516,3 @@ saveGroupPlot(df)
 #printConfidenceInterval(df)
 saveDistributionPlots(df)
 saveCorrelationPlots(df)
-
-
-
