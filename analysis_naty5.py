@@ -191,11 +191,11 @@ def saveTwoKDE(df):
 
     #(x, y1, y2, xlabel, ylabel, y1_legend, y2_legend, m1=1, m2=1, ds, title, filename)
     lsV = []
-    lsV.append(['ROOM_TEMP','A','AEM','Temperature(°C)', 'Availability (%)', 'Availability','A. Electromigration',100,100,'Kernel Density Estimation','kdes/1_a_aem'])
-    lsV.append(['ROOM_TEMP','A','AC','Temperature(°C)', 'Availability (%)', 'Availability','A. Corrosion',100,100,'Kernel Density Estimation','kdes/2_a_ac'])
-    lsV.append(['ROOM_TEMP','A','ATDDB','Temperature(°C)', 'Availability (%)', 'Availability','A. Time Depending Dielectric Breakdown',100,100,'Kernel Density Estimation','kdes/3_a_tddb'])
-    lsV.append(['ROOM_TEMP','A','ASM','Temperature(°C)', 'Availability (%)', 'Availability','A. Stress Migration',100,100,'Kernel Density Estimation','kdes/4_a_asm'])
-    lsV.append(['ROOM_TEMP','A','ATC','Temperature(°C)', 'Availability (%)', 'Availability','A. Thermal Cycling',100,100,'Kernel Density Estimation','kdes/5_a_atc'])
+    lsV.append(['TF','A','AEM','Temperature(°C)', 'Availability (%)', 'Availability','A. Electromigration',100,100,'Kernel Density Estimation','kdes/1_a_aem'])
+    lsV.append(['TF','A','AC','Temperature(°C)', 'Availability (%)', 'Availability','A. Corrosion',100,100,'Kernel Density Estimation','kdes/2_a_ac'])
+    lsV.append(['TF','A','ATDDB','Temperature(°C)', 'Availability (%)', 'Availability','A. Time Depending Dielectric Breakdown',100,100,'Kernel Density Estimation','kdes/3_a_tddb'])
+    lsV.append(['TF','A','ASM','Temperature(°C)', 'Availability (%)', 'Availability','A. Stress Migration',100,100,'Kernel Density Estimation','kdes/4_a_asm'])
+    lsV.append(['TF','A','ATC','Temperature(°C)', 'Availability (%)', 'Availability','A. Thermal Cycling',100,100,'Kernel Density Estimation','kdes/5_a_atc'])
     
     for v in lsV:
         print('xlabel: ', v[4])
@@ -472,14 +472,13 @@ def saveDistPlots(df):
 
 df = load_csv()
 #print (df.iloc[:,41:63].describe())
-#plt.table(df.iloc[:,41:63].describe())
+#print(df.iloc[:,42:74].describe())
 saveTwoKDE(df)
 saveFigures(df)
 saveGroupPlot(df)
 #printConfidenceInterval(df)
-#stardard_desviation(df)
 saveDistributionPlots(df)
-#saveDistPlots(df)
-saveChartAvailability(df)
 saveCorrelationPlots(df)
+
+
 
