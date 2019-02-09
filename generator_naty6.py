@@ -345,10 +345,10 @@ def addTimeStamp(sizePop):
         return [i for i in range(1, sizePop + 1)]
 
 def addRangeExternalTemp(sizePop):
-    return [random.uniform(10,60) for i in range(0,sizePop)]
+    return [int(random.uniform(10,60)) for i in range(0,sizePop)]
 
 def addRangeRoomTemp(sizePop):
-    return [random.uniform(20,30) for i in range(0,sizePop)]
+    return [int(random.uniform(20,30)) for i in range(0,sizePop)]
 
 def UnifiedReliability(MTTF_TC, MTTF_SM):
     return 1/((1/MTTF_SM)+(1/MTTF_TC))

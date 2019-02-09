@@ -99,10 +99,9 @@ def plotCorrelation(df, x, y, area, colors, alpha, title, filename):
     plt.savefig(filename)
     plt.clf()
 
-def plotDataset(x_,y_,ds, xlabel, ylabel, title, filename, ylimbottom = None, ylimtop = None):
+def plotDataset(x_, y_, ds, xlabel, ylabel, title, filename,formatter = '%d'):
     ax = sns.lineplot(x = x_, y = y_, data = ds)
-    ax.yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
-    plt.ylim(ylimbottom, ylimtop)
+    ax.yaxis.set_major_formatter(FormatStrFormatter(formatter))
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.title(title)
@@ -225,38 +224,38 @@ def saveFigures(df):
     sample = df.sample(SAMPLESIZE).sort_values('TIMESTAMP')
     
     ls = []
-    #(x_,y_,ds, xlabel, ylabel, title, filename)
+    #(formatter, x_,y_,ds, xlabel, ylabel, title, filename)
     #plots vs time
     
     ls.append(['TIMESTAMP', 'F', 'Time(s)', 'Frequency (MHz)','Frequency vs Time','plots/1_frecuency_time'])
-    #ls.append(['TIMESTAMP', 'TF', 'Time(s)', 'Temperature (°C)','Temperature VS Time','plots/2_temperature_vs_time'])
+    ls.append(['%.3f','TIMESTAMP', 'TF', 'Time(s)', 'Temperature (°C)','Temperature VS Time','plots/2_temperature_vs_time'])
     ls.append(['TIMESTAMP', 'MTT', 'Time(s)', 'Mean Time To Failure','Mean Time To Failure vs Time','plots/3_Mean_time_to_failure'])
     ls.append(['TIMESTAMP', 'MTTF_R', 'Time(s)', 'Mean Time To Failure due to changes on processors temperature','Mean Time To Failure due to changes on processors temperature vs Time','plots/4_mean_time_to_failure_due_to_changes_on_processors_time'])
     ls.append(['TIMESTAMP', 'MTTF_EM', 'Time(s)', 'Mean Time To Failure due to changes on the current density','Mean Time To Failure due to changes on the current density vs Time','plots/5_mean_time_to_failure_due_to_changes_on_the_current_density_time'])
     ls.append(['TIMESTAMP', 'MTTF_C', 'Time(s)', 'Mean Time To Failure due to relativite humidity','Mean Time To Failure due to relativite humidity vs Time','plots/6_Mean_time_to_failure_due_to_relativite'])
     ls.append(['TIMESTAMP', 'MTTF_TDDB', 'Time(s)', 'Mean Time To Failure on externally applied electric field','Mean Time To Failure on externally applied electric field vs Time','plots/7_mean time to failure due to changes on externally applied electric field'])
-    ls.append(['TIMESTAMP', 'MTTF_SM', 'Time(s)', 'Mean Time To Failure due to changes on thermal loads','Mean Time To Failure due to changes on thermal loads vs Time','plots/8_mean_time_to_failure_due_to_changes_on_thermal_loads'])
-    ls.append(['TIMESTAMP', 'MTTFF_TC', 'Time(s)', 'TC METRIC','TC METRIC vs Time','plots/9_tcmetric_time'])
-    ls.append(['TIMESTAMP', 'A', 'Time(s)', 'Availability','Availability','plots/10_availability_vs_time'])
-    ls.append(['TIMESTAMP', 'AEM', 'Time(s)', 'Availability Due To Electromigration','Availability Due To Electromigration vs Time','plots/11_Availability Due To Electromigration vs time'])
-    ls.append(['TIMESTAMP', 'AC', 'Time(s)', 'Availability Due To Corrosion','Availability Due To Corrosion vs Time','plots/12_Availability Due To corrosion vs time'])
-    ls.append(['TIMESTAMP', 'ATDDB', 'Time(s)', 'Availability Due Time Depending Dielectric Breakdown','Availability Due Time Depending Dielectric Breakdown vs Time','plots/13_ Availability Due Time Depending Dielectric Breakdown vs time'])
-    ls.append(['TIMESTAMP', 'ASM', 'Time(s)', 'Availability Due To Stress Migration','Availability Due To Stress Migration vs Time','plots/14 Availability Due To Stress Migration vs time'])
-    ls.append(['TIMESTAMP', 'ATC', 'Time(s)', 'Availability Due To Thermal Cycling','Availability Due To Thermal Cycling vs Time','plots/15 Availability Due To Thermal Cycling vs time'])
-    ls.append(['TIMESTAMP', 'TAA', 'Time(s)', 'Availability Due To External Temperature','Availability Due To External Temperature vs Time','plots/16 Availability Due To External Temperature vs time'])
-    ls.append(['TIMESTAMP', 'QRED', 'Time(s)', 'Thermal Load Released','Thermal Load Released vs Time','plots/17 Thermal Load Released vs time']) 
-    ls.append(['TIMESTAMP', 'QR', 'Time(s)', 'Power Required','Power Required vs Time','plots/18 Power Required vs time'])
-    ls.append(['TIMESTAMP', 'PUE', 'Time(s)', 'Power Usage Efficiency','Power Usage Efficiency vs Time','plots/19 Power Usage Efficiency vs time'])
-    ls.append(['TIMESTAMP', 'DCie', 'Time(s)', 'DCie','DCie vs Time','plots/20 DCie vs time'])
-    ls.append(['TIMESTAMP', 'cost', 'Time(s)', 'Cost','Cost vs Time','plots/21 cost vs time'])
-    ls.append(['TIMESTAMP', 'MTTF_IC', 'Time(s)', 'Unified Reliability','Unified Reliability','plots/22 Unified Reliability'])
-    ls.append(['TIMESTAMP', 'A_TC', 'Time(s)', 'Unified Availability','Unified Availability vs Time','plots/23 Unified Availability vs time'])
-    ls.append(['TIMESTAMP', 'Q_DIT', 'Time(s)', 'Amount Energy Dissipated','Amount Energy Dissipated vs Time','plots/24 Amount Energy Dissipated vs time'])
-    ls.append(['TIMESTAMP', 'TPF', 'Time(s)', 'External Temperature Impact','External Temperature Impact vs Time','plots/25 External Temperature Impact vs Time'])
-    ls.append(['TIMESTAMP', 'AIRFLOW', 'Time(s)', 'Required Volume Airflow','Required Volume Airflow vs Time','plots/26 Required Volume Airflow vs time'])
-    ls.append(['TIMESTAMP', 'TAAF', 'Time(s)', 'Thermal Accelerated Aging','Thermal Accelerated Aging vs Time','plots/27 Thermal Accelerated Aging vs time'])
-    ls.append(['TIMESTAMP', 'DeltaT_de', 'Time(s)', 'Temperature rise due to the dissipation of energy','Temperature rise due to the dissipation of energy vs Time','plots/24 Temperature rise due to the dissipation of energy vs time'])
-    ls.append(['TIMESTAMP', 'QD', 'Time(s)', 'Energy Demanded','Energy Demanded vs Time','plots/24 Energy Demanded vs time'])
+    ls.append(['%.1f','TIMESTAMP', 'MTTF_SM', 'Time(s)', 'Mean Time To Failure due to changes on thermal loads','Mean Time To Failure due to changes on thermal loads vs Time','plots/8_mean_time_to_failure_due_to_changes_on_thermal_loads'])
+    ls.append(['%.1f','TIMESTAMP', 'MTTFF_TC', 'Time(s)', 'TC METRIC','TC METRIC vs Time','plots/9_tcmetric_time'])
+    ls.append(['%.4f','TIMESTAMP', 'A', 'Time(s)', 'Availability','Availability','plots/10_availability_vs_time'])
+    ls.append(['%.4f','TIMESTAMP', 'AEM', 'Time(s)', 'Availability Due To Electromigration','Availability Due To Electromigration vs Time','plots/11_Availability Due To Electromigration vs time'])
+    ls.append(['%.4f','TIMESTAMP', 'AC', 'Time(s)', 'Availability Due To Corrosion','Availability Due To Corrosion vs Time','plots/12_Availability Due To corrosion vs time'])
+    ls.append(['%.4f','TIMESTAMP', 'ATDDB', 'Time(s)', 'Availability Due Time Depending Dielectric Breakdown','Availability Due Time Depending Dielectric Breakdown vs Time','plots/13_ Availability Due Time Depending Dielectric Breakdown vs time'])
+    ls.append(['%.4f','TIMESTAMP', 'ASM', 'Time(s)', 'Availability Due To Stress Migration','Availability Due To Stress Migration vs Time','plots/14 Availability Due To Stress Migration vs time'])
+    ls.append(['%.4f','TIMESTAMP', 'ATC', 'Time(s)', 'Availability Due To Thermal Cycling','Availability Due To Thermal Cycling vs Time','plots/15 Availability Due To Thermal Cycling vs time'])
+    ls.append(['%.2f','TIMESTAMP', 'TAA', 'Time(s)', 'Availability Due To External Temperature','Availability Due To External Temperature vs Time','plots/16 Availability Due To External Temperature vs time'])
+    ls.append(['%.2f','TIMESTAMP', 'QRED', 'Time(s)', 'Thermal Load Released','Thermal Load Released vs Time','plots/17 Thermal Load Released vs time']) 
+    ls.append(['%.2f','TIMESTAMP', 'QR', 'Time(s)', 'Power Required','Power Required vs Time','plots/18 Power Required vs time'])
+    ls.append(['%.3f','TIMESTAMP', 'PUE', 'Time(s)', 'Power Usage Efficiency','Power Usage Efficiency vs Time','plots/19 Power Usage Efficiency vs time'])
+    ls.append(['%.2f','TIMESTAMP', 'DCie', 'Time(s)', 'DCie','DCie vs Time','plots/20 DCie vs time'])
+    ls.append(['%.4f','TIMESTAMP', 'cost', 'Time(s)', 'Cost','Cost vs Time','plots/21 cost vs time'])
+    ls.append(['%.2f','TIMESTAMP', 'MTTF_IC', 'Time(s)', 'Unified Reliability','Unified Reliability','plots/22 Unified Reliability'])
+    ls.append(['%.4f','TIMESTAMP', 'A_TC', 'Time(s)', 'Unified Availability','Unified Availability vs Time','plots/23 Unified Availability vs time'])
+    ls.append(['%.3f','TIMESTAMP', 'Q_DIT', 'Time(s)', 'Amount Energy Dissipated','Amount Energy Dissipated vs Time','plots/24 Amount Energy Dissipated vs time'])
+    ls.append(['%.2f','TIMESTAMP', 'TPF', 'Time(s)', 'External Temperature Impact','External Temperature Impact vs Time','plots/25 External Temperature Impact vs Time'])
+    ls.append(['%.4f','TIMESTAMP', 'AIRFLOW', 'Time(s)', 'Required Volume Airflow','Required Volume Airflow vs Time','plots/26 Required Volume Airflow vs time'])
+    ls.append(['%.4f','TIMESTAMP', 'TAAF', 'Time(s)', 'Thermal Accelerated Aging','Thermal Accelerated Aging vs Time','plots/27 Thermal Accelerated Aging vs time'])
+    ls.append(['%.3f','TIMESTAMP', 'DeltaT_de', 'Time(s)', 'Temperature rise due to the dissipation of energy','Temperature rise due to the dissipation of energy vs Time','plots/24 Temperature rise due to the dissipation of energy vs time'])
+    ls.append(['%.3f','TIMESTAMP', 'QD', 'Time(s)', 'Energy Demanded','Energy Demanded vs Time','plots/24 Energy Demanded vs time'])
     #ls.append(['TF', 'F', 'Temperature(°C)', 'Frequency (MHz)','Frequency vs Temperature','plots/25_frecuency_vs_temperature'])
     #ls.append(['TF', 'TF', 'Temperature(°C)', 'Temperature (°C)','Temperature VS Temperature','plots/26_temperature_vs_temperature'])
     ls.append(['TF', 'MTT', 'Temperature(°C)', 'Mean Temperature To Failure','Mean Temperature To Failure vs Temperature','plots/27_Mean_time_to_failure vs temperature'])
@@ -292,11 +291,11 @@ def saveFigures(df):
     for e in ls:
         
         print('plotting ',  e[5])
-        if(len(e) != 6):
-            #e[6] and e[7] are the bottom and top limit in y-axis
-            plotDataset(e[0], e[1], sample, e[2], e[3], e[4], e[5], e[6], e[7])
-        else:
+        if(len(e) == 6):
+            #plot without formatter
             plotDataset(e[0], e[1], sample, e[2], e[3], e[4], e[5])
+        else:
+            plotDataset(e[1], e[2], sample, e[3], e[4], e[5], e[6], e[0])
     
     ls3d = []
     ls3d.append(['TIMESTAMP','TF','MTTFF_TC','Time(s)', 'Temperature (°C)','MTTFF_TC' ,'Time,Temperature vs MTTFF_TC','scatterplots/scatter_3d__1_MTTFF_TC'])
