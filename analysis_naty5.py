@@ -99,10 +99,9 @@ def plotCorrelation(df, x, y, area, colors, alpha, title, filename):
     plt.savefig(filename)
     plt.clf()
 
-def plotDataset(x_,y_,ds, xlabel, ylabel, title, filename, ylimbottom = None, ylimtop = None):
+def plotDataset(x_, y_, ds, xlabel, ylabel, title, filename,formatter = '%d'):
     ax = sns.lineplot(x = x_, y = y_, data = ds)
-    ax.yaxis.set_major_formatter(FormatStrFormatter('%.4f'))
-    plt.ylim(ylimbottom, ylimtop)
+    ax.yaxis.set_major_formatter(FormatStrFormatter(formatter))
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.title(title)
@@ -225,7 +224,7 @@ def saveFigures(df):
     sample = df.sample(SAMPLESIZE).sort_values('TIMESTAMP')
     
     ls = []
-    #(x_,y_,ds, xlabel, ylabel, title, filename)
+    #(formatter, x_,y_,ds, xlabel, ylabel, title, filename)
     #plots vs time
     
     ls.append(['TIMESTAMP', 'F', 'Time(s)', 'Frequency (MHz)','Frequency vs Time','plots/1_frecuency_time'])
@@ -237,9 +236,9 @@ def saveFigures(df):
     ls.append(['TIMESTAMP', 'MTTF_TDDB', 'Time(s)', 'Mean Time To Failure on externally applied electric field','Mean Time To Failure on externally applied electric field vs Time','plots/7_mean time to failure due to changes on externally applied electric field'])
     ls.append(['TIMESTAMP', 'MTTF_SM', 'Time(s)', 'Mean Time To Failure due to changes on thermal loads','Mean Time To Failure due to changes on thermal loads vs Time','plots/8_mean_time_to_failure_due_to_changes_on_thermal_loads'])
     ls.append(['TIMESTAMP', 'MTTFF_TC', 'Time(s)', 'TC METRIC','TC METRIC vs Time','plots/9_tcmetric_time'])
-    ls.append(['TIMESTAMP', 'A', 'Time(s)', 'Availability','Availability','plots/10_availability_vs_time'])
-    ls.append(['TIMESTAMP', 'AEM', 'Time(s)', 'Availability Due To Electromigration','Availability Due To Electromigration vs Time','plots/11_Availability Due To Electromigration vs time', min(sample['AEM']), max(sample['AEM'])])
-    ls.append(['TIMESTAMP', 'AC', 'Time(s)', 'Availability Due To Corrosion','Availability Due To Corrosion vs Time','plots/12_Availability Due To corrosion vs time',min(sample['AC']), max(sample['AC'])])
+    ls.append(['%.4f','TIMESTAMP', 'A', 'Time(s)', 'Availability','Availability','plots/10_availability_vs_time'])
+    ls.append(['TIMESTAMP', 'AEM', 'Time(s)', 'Availability Due To Electromigration','Availability Due To Electromigration vs Time','plots/11_Availability Due To Electromigration vs time'])
+    ls.append(['TIMESTAMP', 'AC', 'Time(s)', 'Availability Due To Corrosion','Availability Due To Corrosion vs Time','plots/12_Availability Due To corrosion vs time'])
     ls.append(['TIMESTAMP', 'ATDDB', 'Time(s)', 'Availability Due Time Depending Dielectric Breakdown','Availability Due Time Depending Dielectric Breakdown vs Time','plots/13_ Availability Due Time Depending Dielectric Breakdown vs time'])
     ls.append(['TIMESTAMP', 'ASM', 'Time(s)', 'Availability Due To Stress Migration','Availability Due To Stress Migration vs Time','plots/14 Availability Due To Stress Migration vs time'])
     ls.append(['TIMESTAMP', 'ATC', 'Time(s)', 'Availability Due To Thermal Cycling','Availability Due To Thermal Cycling vs Time','plots/15 Availability Due To Thermal Cycling vs time'])
@@ -292,11 +291,11 @@ def saveFigures(df):
     for e in ls:
         
         print('plotting ',  e[5])
-        if(len(e) != 6):
-            #e[6] and e[7] are the bottom and top limit in y-axis
-            plotDataset(e[0], e[1], sample, e[2], e[3], e[4], e[5], e[6], e[7])
-        else:
+        if(len(e) == 6):
+            #plot without formatter
             plotDataset(e[0], e[1], sample, e[2], e[3], e[4], e[5])
+        else:
+            plotDataset(e[1], e[2], sample, e[3], e[4], e[5], e[6], e[0])
     
     ls3d = []
     ls3d.append(['TIMESTAMP','TF','MTTFF_TC','Time(s)', 'Temperature (°C)','MTTFF_TC' ,'Time,Temperature vs MTTFF_TC','scatterplots/scatter_3d__1_MTTFF_TC'])
