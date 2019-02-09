@@ -229,7 +229,7 @@ def saveFigures(df):
     #plots vs time
     
     ls.append(['TIMESTAMP', 'F', 'Time(s)', 'Frequency (MHz)','Frequency vs Time','plots/1_frecuency_time'])
-    ls.append(['TIMESTAMP', 'TF', 'Time(s)', 'Temperature (°C)','Temperature VS Time','plots/2_temperature_vs_time'])
+    #ls.append(['TIMESTAMP', 'TF', 'Time(s)', 'Temperature (°C)','Temperature VS Time','plots/2_temperature_vs_time'])
     ls.append(['TIMESTAMP', 'MTT', 'Time(s)', 'Mean Time To Failure','Mean Time To Failure vs Time','plots/3_Mean_time_to_failure'])
     ls.append(['TIMESTAMP', 'MTTF_R', 'Time(s)', 'Mean Time To Failure due to changes on processors temperature','Mean Time To Failure due to changes on processors temperature vs Time','plots/4_mean_time_to_failure_due_to_changes_on_processors_time'])
     ls.append(['TIMESTAMP', 'MTTF_EM', 'Time(s)', 'Mean Time To Failure due to changes on the current density','Mean Time To Failure due to changes on the current density vs Time','plots/5_mean_time_to_failure_due_to_changes_on_the_current_density_time'])
@@ -238,8 +238,8 @@ def saveFigures(df):
     ls.append(['TIMESTAMP', 'MTTF_SM', 'Time(s)', 'Mean Time To Failure due to changes on thermal loads','Mean Time To Failure due to changes on thermal loads vs Time','plots/8_mean_time_to_failure_due_to_changes_on_thermal_loads'])
     ls.append(['TIMESTAMP', 'MTTFF_TC', 'Time(s)', 'TC METRIC','TC METRIC vs Time','plots/9_tcmetric_time'])
     ls.append(['TIMESTAMP', 'A', 'Time(s)', 'Availability','Availability','plots/10_availability_vs_time'])
-    ls.append(['TIMESTAMP', 'AEM', 'Time(s)', 'Availability Due To Electromigration','Availability Due To Electromigration vs Time','plots/11_Availability Due To Electromigration vs time', min(sample['AEM']), max(sample['AEM'])])
-    ls.append(['TIMESTAMP', 'AC', 'Time(s)', 'Availability Due To Corrosion','Availability Due To Corrosion vs Time','plots/12_Availability Due To corrosion vs time',min(sample['AC']), max(sample['AC'])])
+    ls.append(['TIMESTAMP', 'AEM', 'Time(s)', 'Availability Due To Electromigration','Availability Due To Electromigration vs Time','plots/11_Availability Due To Electromigration vs time'])
+    ls.append(['TIMESTAMP', 'AC', 'Time(s)', 'Availability Due To Corrosion','Availability Due To Corrosion vs Time','plots/12_Availability Due To corrosion vs time'])
     ls.append(['TIMESTAMP', 'ATDDB', 'Time(s)', 'Availability Due Time Depending Dielectric Breakdown','Availability Due Time Depending Dielectric Breakdown vs Time','plots/13_ Availability Due Time Depending Dielectric Breakdown vs time'])
     ls.append(['TIMESTAMP', 'ASM', 'Time(s)', 'Availability Due To Stress Migration','Availability Due To Stress Migration vs Time','plots/14 Availability Due To Stress Migration vs time'])
     ls.append(['TIMESTAMP', 'ATC', 'Time(s)', 'Availability Due To Thermal Cycling','Availability Due To Thermal Cycling vs Time','plots/15 Availability Due To Thermal Cycling vs time'])
