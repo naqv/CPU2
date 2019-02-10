@@ -49,7 +49,14 @@ def saveTable(df, title, filename):
     plt.clf()
 
 def saveHeatMap(df, title, filename):
-    sns.heatmap(df.corr())
+    corr = df.corr()
+    
+    mask = np.zeros_like(corr, dtype=np.bool)
+    mask[np.triu_indices_from(mask)] = True
+
+    sns.heatmap(corr, mask=mask, center=0,
+            square=True, linewidths=.5, cbar_kws={"shrink": .5})
+    
     plt.title(title)
     plt.savefig(filename)
     plt.clf()
@@ -106,7 +113,9 @@ def printConfidenceInterval(df):
     mci_cost = getMeanConfidenceInterval(df['DeltaT_de'].values,'DeltaT_de')
     mci_cost = getMeanConfidenceInterval(df['QD'].values,'QD')
 
-def plotHist(x, df, n, title, filename):
+def plotHist(x,  df, n, xlabel, ylabel, title, filename):
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
     plt.hist(df[x], n)
     plt.title(title)
     plt.savefig(filename)
@@ -175,8 +184,8 @@ def plotDist(x,ds, title, filepath):
     
 def plotGroup(lsMetrics, xMeasure, xlabel, ylabel, ds, title, filename):
     x = ds[xMeasure].values
-    plt.xlabel = xlabel
-    plt.ylabel = ylabel
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
     for e in lsMetrics:
         y = ds[e[0]].values
         plt.plot(x, y, label = e[1],marker=e[2])
@@ -361,24 +370,25 @@ def saveDistributionPlots(df):
         os.makedirs('hist_dist_plots')
     n= 50
     print('plotting distribution plots (using hist)')
-    plotHist('A', df, n, 'Availability Distribution', 'hist_dist_plots/1_Availability_distribution')
-    plotHist('AEM', df, n, 'Availability Due to Electromigration Distribution', 'hist_dist_plots/2_Availability_electromigration_distribution')
-    plotHist('AC', df, n, 'Availability Corrosion Distribution', 'hist_dist_plots/3_availability_corrosion')
-    plotHist('ATDDB', df, n, 'Availability Due Time Dielectric Distribution', 'hist_dist_plots/4_availability_due_time_depende_dielectric')
-    plotHist('ASM', df, n, 'Availability Stress Migration Distribution', 'hist_dist_plots/5_availability_stress_migration')
-    plotHist('ATC', df, n, 'Availability Thermal Cycling Distribution', 'hist_dist_plots/6_availability_thermal_cycling')
-    plotHist('TAA', df, n, 'Actual Ambient Temperature Distribution', 'hist_dist_plots/7_actual_ambient_temperature')
-    plotHist('QRED', df, n, 'Thermal Load Released Distribution', 'hist_dist_plots/8_thermal_load_released')
-    plotHist('QR', df, n, 'Power Required Distribution', 'hist_dist_plots/9_QR')
-    plotHist('MTT', df, n, 'MTTF Distribution', 'hist_dist_plots/10_Mean Time To Failure')
-    plotHist('PUE', df, n, 'Power Ussage Efficiency Distribution', 'hist_dist_plots/11_Power_Ussage_Efficiency')
-    plotHist('DCie', df, n, 'DataCenter Infrastructure Efficiency Distribution', 'hist_dist_plots/12_DataCenter_Infrastructure_Efficiency')
-    plotHist('cost', df, n, 'Cost Distribution', 'hist_dist_plots/13_Cost')
-    plotHist('EXTERNAL_TEMP', df, n, 'External Temperature Distribution', 'hist_dist_plots/14_External_Temperature')
-    plotHist('ROOM_TEMP', df, n, 'Room Temperature Distribution', 'hist_dist_plots/15_Room_Temperature')
-    plotHist('AIRFLOW', df, n, 'Required Volume Airflow Distribution', 'hist_dist_plots/16_Airflow')
-    plotHist('QD', df, n, 'Energy Demanded Distribution', 'hist_dist_plots/17_Energy_Demanded')
-    plotHist('DeltaT_de', df, n, 'Temperature Rise Due To Dissipation Energy Distribution', 'hist_dist_plots/18_Rise_Dissipation_Energy')
+    #(x,  df, n, xlabel, ylabel, title, filename)
+    plotHist('A', df, n,'Availability','Frequency', 'Availability Distribution', 'hist_dist_plots/1_Availability_distribution')
+    plotHist('AEM', df, n,'Availability Due to Electromigration','Frequency', 'Availability Due to Electromigration Distribution', 'hist_dist_plots/2_Availability_electromigration_distribution')
+    plotHist('AC', df, n,'Availability Corrosion','Frequency', 'Availability Corrosion Distribution', 'hist_dist_plots/3_availability_corrosion')
+    plotHist('ATDDB', df, n,'Availability Due Time Dielectric Breakdown','Frequency', 'Availability Due Time Dielectric Breakdown Distribution', 'hist_dist_plots/4_availability_due_time_depende_dielectric')
+    plotHist('ASM', df, n,'Availability Stress Migration','Frequency', 'Availability Stress Migration Distribution', 'hist_dist_plots/5_availability_stress_migration')
+    plotHist('ATC', df, n,'Availability Thermal Cycling','Frequency', 'Availability Thermal Cycling Distribution', 'hist_dist_plots/6_availability_thermal_cycling')
+    plotHist('TAA', df, n,'Actual Ambient Temperature','Frequency', 'Actual Ambient Temperature Distribution', 'hist_dist_plots/7_actual_ambient_temperature')
+    plotHist('QRED', df, n,'Thermal Load Released','Frequency', 'Thermal Load Released Distribution', 'hist_dist_plots/8_thermal_load_released')
+    plotHist('QR', df, n,'Power Required','Frequency', 'Power Required Distribution', 'hist_dist_plots/9_QR')
+    plotHist('MTT', df, n,'MTTF','Frequency', 'MTTF Distribution', 'hist_dist_plots/10_Mean Time To Failure')
+    plotHist('PUE', df, n,'Power Ussage Efficiency','Frequency', 'Power Ussage Efficiency Distribution', 'hist_dist_plots/11_Power_Ussage_Efficiency')
+    plotHist('DCie', df, n,'DataCenter Infrastructure Efficiency','Frequency', 'DataCenter Infrastructure Efficiency Distribution', 'hist_dist_plots/12_DataCenter_Infrastructure_Efficiency')
+    plotHist('cost', df, n,'Cost','Frequency', 'Cost Distribution', 'hist_dist_plots/13_Cost')
+    plotHist('EXTERNAL_TEMP', df, n,'External Temperature','Frequency', 'External Temperature Distribution', 'hist_dist_plots/14_External_Temperature')
+    plotHist('ROOM_TEMP', df, n,'Room Temperature','Frequency', 'Room Temperature Distribution', 'hist_dist_plots/15_Room_Temperature')
+    plotHist('AIRFLOW', df, n,'Required Volume Airflow','Frequency', 'Required Volume Airflow Distribution', 'hist_dist_plots/16_Airflow')
+    plotHist('QD', df, n,'Energy Demanded','Frequency', 'Energy Demanded Distribution', 'hist_dist_plots/17_Energy_Demanded')
+    plotHist('DeltaT_de', df, n,'Temperature Rise Due To Dissipation Energy','Frequency', 'Temperature Rise Due To Dissipation Energy Distribution', 'hist_dist_plots/18_Rise_Dissipation_Energy')
 
 
 
@@ -503,16 +513,16 @@ def saveDistPlots(df):
 
 df = load_csv()
 
-table = df.iloc[:,41:].describe().round(4)
-saveTable(table, 'Variables', 'Variables describe')
+table = df.iloc[:,41:]
+saveTable(table.describe().round(4), 'Variables', 'Variables describe')
 saveHeatMap(table, 'Heatmap', 'Heatmap Variables')
 
 
 #print (df.iloc[:,41:63].describe())
 #print(df.iloc[:,42:74].describe())
-saveTwoKDE(df)
-saveFigures(df)
+#saveTwoKDE(df)
+#saveFigures(df)
 saveGroupPlot(df)
 #printConfidenceInterval(df)
 saveDistributionPlots(df)
-saveCorrelationPlots(df)
+#saveCorrelationPlots(df)
