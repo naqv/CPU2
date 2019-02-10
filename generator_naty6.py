@@ -146,7 +146,7 @@ def output_frequency(vectorFrequency,room_temperature):
     #b = - (3600 * (h * As)/m*C) * t
     a = ((I * V) + (activity_factor * cp * (V**2) * vectorFrequency)) / (h * as_motherboard)
     b = - (3600 * (h * as_motherboard)/(mass * C))*t
-    rs = (room_temperature + a * (1 -(math.e**b) ))/10
+    rs = (room_temperature + a * (1 -(math.e**b) ))/10.0
     return rs
 
 #equation 3
@@ -207,7 +207,7 @@ def mttfsm(tf,room_temperature):
     return mttfsm
 
 def mttftc(tf,room_temperature):
-    mttftc = MTTF_t * (abs(tf - T_inf_adv)/abs(tf - np.array(room_temperature))) ** (-q)
+    mttftc = MTTF_t * (abs(tf - T_inf_adv )/abs(tf - np.array(room_temperature))) ** (-q)
     return mttftc
 
 def availability(temperature,room_temperature):
@@ -351,8 +351,8 @@ def addRangeRoomTemp(sizePop):
     return [int(random.uniform(20,30)) for i in range(0,sizePop)]
 
 def UnifiedReliability(MTTF_TC, MTTF_SM):
-    return 1/((1/MTTF_SM)+(1/MTTF_TC))
-    #return (MTTF_TC * MTTF_SM) /(MTTF_TC + MTTF_SM)
+    #return 1/((1/MTTF_SM)+(1/MTTF_TC))
+    return ((MTTF_TC * MTTF_SM) /(MTTF_TC + MTTF_SM))
 
 def UnifiedAvailability(MTTF_IC):
     return MTTF_IC / (MTTF_IC + MTTR)
