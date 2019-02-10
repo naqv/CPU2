@@ -128,6 +128,8 @@ def plotHist(x,  df, n, xlabel, ylabel, title, filename):
 def plotCorrelation(df, x, y, area, colors, alpha, title, filename):
     cmap = sns.cubehelix_palette(dark=.3, light=.8, as_cmap=True)
     ax = sns.scatterplot(x = x, y = y, palette = cmap, size=x, data = df)
+    plt.ylim(df[y].min(),df[y].max())
+    plt.xlim(df[x].min(),df[x].max())
     plt.xlabel(x)
     plt.ylabel(y)
     #plt.scatter(df[x],df[y], s = area, c = colors, alpha = alpha)
