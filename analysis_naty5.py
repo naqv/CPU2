@@ -134,7 +134,11 @@ def stardard_desviation(df):
     plt.clf()
 
 def plotCorrelation(df, x, y, area, colors, alpha, title, filename):
-    plt.scatter(df[x],df[y], s = area, c = colors, alpha = alpha)
+    cmap = sns.cubehelix_palette(dark=.3, light=.8, as_cmap=True)
+    ax = sns.scatterplot(x = x, y = y, palette = cmap, size=x, data = df)
+    plt.xlabel(x)
+    plt.ylabel(y)
+    #plt.scatter(df[x],df[y], s = area, c = colors, alpha = alpha)
     plt.title(title)
     plt.savefig(filename)
     plt.clf()
