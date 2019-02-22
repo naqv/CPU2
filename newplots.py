@@ -240,11 +240,41 @@ def plotPerformance(df):
     plotDataset('Time','Failure',aux,'Time[s]','Failure Rate','Failure Rate vs Timestamp','plot_5_failure_rate_vs_time','%.6f')
 
 
+def plotNewCharts(df):
+    '''
+        See =>
+        Equations for new graph:
+        Available Bandwidth (AB) #no idea about this feature
+        C: Bandwidth total !no idea about this feature
+        Idle_rate: Bandwidth total - Bandwidth usage AB=C/(C+Idle_rate) #no idea about this feature
+        Times==timesstamp
+        Thruput = Flow traffic / times (~ 50hours), *partially done, check, assumed times = 50
+        Thruput availability = avg Thruput / max Thruput, *done
+        to find is to only use box plot table, *done, which will inform the upper, middle and lower limit
+        failure rate : 1/MTTF performance= 1 - failure rate *done, see plotPerformance function
+    '''
+    #pending, i don't have AB, C or a method to calculate them
+
+def plotBox(df, column, title, filename):
+    sns.boxplot(x = column, data = df, orient = 'v')
+    plt.title(title)
+    plt.savefig(filename)
+    plt.clf()
+    
+
 cpu_usage = 'vnf cpu usage'
 mem_usage = 'vnf mem usage'
 sto_usage = 'vnf sto usage'
 time = 'TIMESTAMP'
+
+#adding Thruput
+#check this value (50) do I have to divide by 50 or timestamp?
+df = df.assign(Thruput = (df['flow traffic']/ 50).values)
+
 sample = df.sample(1000)
+
+thruputAvailability_Sample = sample['Thruput'].mean() / sample['Thruput'].max()
+thruputAvailability_AllDF = df['Thruput'].mean() / df['Thruput'].max()
 
 #plotting hist
 plotHist(cpu_usage, df, 50,'CPU USAGE','Frequency','CPU USAGE HISTOGRAM','hist_1_cpu_usage')
@@ -256,7 +286,6 @@ plotDataset(time, cpu_usage, sample.sort_values(time),'TIME [s]', 'CPU USAGE', '
 plotDataset(time, mem_usage, sample.sort_values(time),'TIME [s]', 'MEM USAGE', 'MEM USAGE VS TIMESTAMP', 'plot_2_mem_usage_vs_time')
 plotDataset(time,'sla', sample.sort_values(time),'TIME [s]', 'SLA', 'SLA VS TIMESTAMP', 'plot_3_sla_vs_time')
 
-
 #plotting heatmaps
 saveHeatMap(sample.iloc[:,1:42], 'HEAT MAP', 'heatmap_41variables')
 
@@ -267,3 +296,7 @@ saveTable(sample[[cpu_usage, mem_usage]].describe(),'TABLE', 'table_1_cpu')
 plotInterval(sample.sort_values(cpu_usage), time, cpu_usage,'TIMESTAMP','CPU USAGE','CPU USAGE VS TIMESTAMP','confidence_interval_1_cpu_vs_time')
 
 plotPerformance(sample.sort_values(time))
+
+#plotting boxplot
+plotBox(sample, 'Thruput', 'Thruput Boxplot', 'boxplot_1_Thruput')
+

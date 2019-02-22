@@ -357,7 +357,8 @@ def UnifiedAvailability(MTTF_IC):
 def main():
     try:
         print('starting')
-        df = getDataframeFromCsv('results.csv',',')
+        df = getDataframeFromCsv('results_out_with_new_values.csv',';') #new dataset with more observations
+        #df = getDataframeFromCsv('results.csv',',') # old dataset
         temperature_room= addRangeRoomTemp(len(df)) #temperature_room
         external_temperature= addRangeExternalTemp(len(df)) #external_temperature
         freq= (get_average_cpu_freceuncy(df))
