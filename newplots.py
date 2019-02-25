@@ -56,7 +56,7 @@ def plotHist(x,  df, n, xlabel, ylabel, title, filename, labels = None):
     else:
         plt.hist(df[x], n, label = labels)
     plt.title(title)
-    plt.savefig(filename)
+    plt.savefig(folder + '/' + filename)
     plt.clf()
 
 def saveHeatMap(df, title, filename):
@@ -69,7 +69,7 @@ def saveHeatMap(df, title, filename):
             square=True, linewidths=.5, cbar_kws={"shrink": .5})
     
     plt.title(title)
-    plt.savefig(filename)
+    plt.savefig(folder + '/' + filename)
     plt.clf()
     print('saved heatmap')
 
@@ -79,7 +79,7 @@ def plotDataset(x_, y_, ds, xlabel, ylabel, title, filename,formatter = '%d'):
     plt.ylabel(ylabel)
     plt.xlabel(xlabel)
     plt.title(title)
-    plt.savefig(filename)
+    plt.savefig(folder + '/' + filename)
     plt.clf()
 
 def plot_ci_manual(t, s_err, n, x, x2, y2, ax=None):
@@ -212,7 +212,7 @@ def plotInterval(df,x,y, xlabel, ylabel, title, filename):
 
     # Save Figure
     plt.tight_layout()
-    plt.savefig(filename, bbox_extra_artists=(legend,), bbox_inches="tight")
+    plt.savefig(folder + '/' + filename, bbox_extra_artists=(legend,), bbox_inches="tight")
     plt.clf()
 
 def saveTable(df, title, filename):
@@ -226,7 +226,7 @@ def saveTable(df, title, filename):
     ptable(ax, df, loc='upper center')
     plt.axis('off')
     
-    plt.savefig(filename)
+    plt.savefig(folder + '/' + filename)
     print('saving table ', filename)
     plt.clf()
 
@@ -255,7 +255,7 @@ def statiscticsThreshold(df, x, title, filename):
     plt.xlabel('OVERLOAD, UNDERLOAD')
     plt.ylabel('Frequency')
     plt.title('OVERLOAD, UNDERLOAD FREQUENCY')
-    plt.savefig('countplot_overload_underload_cpu_usage')
+    plt.savefig(folder + '/' + 'countplot_overload_underload_cpu_usage')
     plt.clf()
 
 def statisticThresholdWithTu(df, x, title, filename, Tu):
@@ -285,7 +285,7 @@ def statisticThresholdWithTu(df, x, title, filename, Tu):
     plt.xlabel('OVERLOAD')
     plt.ylabel('Frequency')
     plt.title('OVERLOADFREQUENCY')
-    plt.savefig('countplot_overload_using_tu_cpu_usage')
+    plt.savefig(folder + '/' + 'countplot_overload_using_tu_cpu_usage')
     plt.clf()
 
 def plotPerformance(df):
@@ -314,7 +314,7 @@ def plotNewCharts(df):
 def plotBox(df, column, title, filename):
     sns.boxplot(x = column, data = df, orient = 'v')
     plt.title(title)
-    plt.savefig(filename)
+    plt.savefig(folder + '/' + filename)
     plt.clf()
     
 def sensibilityAnalysis(df):
