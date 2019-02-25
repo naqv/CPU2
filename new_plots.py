@@ -46,7 +46,7 @@ folder = 'statistic_threshold'
 if not os.path.exists(folder):
     os.makedirs(folder)
 
-df =  pd.read_csv('results_out.csv', delimiter = ';', low_memory = False)
+df =  pd.read_csv('nuevo_results_out.csv', delimiter = ';', low_memory = False)
 
 def plotHist(x,  df, n, xlabel, ylabel, title, filename, labels = None):
     plt.xlabel(xlabel)
